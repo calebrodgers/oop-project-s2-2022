@@ -37,7 +37,7 @@ class Game {
 
       if (!wasWPressed) {
         if (Keyboard::isKeyPressed(Keyboard::W)) {
-          pyr->move(Vector2f(0, -60));
+          pyr->move(Vector2f(0, -64));
           wasWPressed = true;
         }
       } else if (!Keyboard::isKeyPressed(Keyboard::W)) {
@@ -46,7 +46,7 @@ class Game {
 
       if (!wasAPressed) {
         if (Keyboard::isKeyPressed(Keyboard::A)) {
-          pyr->move(Vector2f(-60, 0));
+          pyr->move(Vector2f(-64, 0));
           wasAPressed = true;
         }
       } else if (!Keyboard::isKeyPressed(Keyboard::A)) {
@@ -55,7 +55,7 @@ class Game {
 
       if (!wasSPressed) {
         if (Keyboard::isKeyPressed(Keyboard::S)) {
-          pyr->move(Vector2f(0, 60));
+          pyr->move(Vector2f(0, 64));
           wasSPressed = true;
         }
       } else if (!Keyboard::isKeyPressed(Keyboard::S)) {
@@ -64,7 +64,7 @@ class Game {
 
       if (!wasDPressed) {
         if (Keyboard::isKeyPressed(Keyboard::D)) {
-          pyr->move(Vector2f(60, 0));
+          pyr->move(Vector2f(64, 0));
           wasDPressed = true;
         }
       } else if (!Keyboard::isKeyPressed(Keyboard::D)) {
