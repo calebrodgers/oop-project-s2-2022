@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "BorderWall.h"
 #include "GameEntity.h"
 #include "Mirror.h"
 #include "Player.h"
@@ -11,6 +12,7 @@ class Game {
  private:
   sf::RenderWindow* window;
   Player* pyr;
+  BorderWall* border;
   Mirror* mir1;
   Mirror* mir2;
 
@@ -23,6 +25,7 @@ class Game {
     mir1 = new Mirror(Vector2f(64, 64));
     mir2 = new Mirror(Vector2f(512, 192));
     pyr = new Player();
+    border = new BorderWall(704);
 
     bool wasWPressed = false;
     bool wasAPressed = false;
@@ -37,7 +40,7 @@ class Game {
 
       if (!wasWPressed) {
         if (Keyboard::isKeyPressed(Keyboard::W)) {
-          pyr->move(Vector2f(0, -64));
+          pyr->move(Vector2f(0, -64), 704);
           wasWPressed = true;
         }
       } else if (!Keyboard::isKeyPressed(Keyboard::W)) {
@@ -46,7 +49,7 @@ class Game {
 
       if (!wasAPressed) {
         if (Keyboard::isKeyPressed(Keyboard::A)) {
-          pyr->move(Vector2f(-64, 0));
+          pyr->move(Vector2f(-64, 0), 704);
           wasAPressed = true;
         }
       } else if (!Keyboard::isKeyPressed(Keyboard::A)) {
@@ -55,7 +58,7 @@ class Game {
 
       if (!wasSPressed) {
         if (Keyboard::isKeyPressed(Keyboard::S)) {
-          pyr->move(Vector2f(0, 64));
+          pyr->move(Vector2f(0, 64), 704);
           wasSPressed = true;
         }
       } else if (!Keyboard::isKeyPressed(Keyboard::S)) {
@@ -64,15 +67,16 @@ class Game {
 
       if (!wasDPressed) {
         if (Keyboard::isKeyPressed(Keyboard::D)) {
-          pyr->move(Vector2f(64, 0));
+          pyr->move(Vector2f(64, 0), 704);
           wasDPressed = true;
         }
       } else if (!Keyboard::isKeyPressed(Keyboard::D)) {
         wasDPressed = false;
       }
 
-      window->clear();
+      window->clear(sf::Color::White);
 
+      border->draw(window);
       mir1->draw(window);
       mir2->draw(window);
       pyr->draw(window);
