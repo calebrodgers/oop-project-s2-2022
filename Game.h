@@ -20,8 +20,8 @@ class Game {
   }
 
   void run() {
-    mir1 = new Mirror(Vector2f(60, 60));
-    mir2 = new Mirror(Vector2f(480, 180));
+    mir1 = new Mirror(Vector2f(64, 64));
+    mir2 = new Mirror(Vector2f(512, 192));
     pyr = new Player();
 
     bool wasWPressed = false;

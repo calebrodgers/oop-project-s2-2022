@@ -8,7 +8,7 @@
 class Player : public GameEntity {
  public:
   Player() {
-    body = new sf::CircleShape(30.f);
+    body = new sf::CircleShape(32.f);
     body->setFillColor(sf::Color::White);
     std::cout << "Mirror made";
   }

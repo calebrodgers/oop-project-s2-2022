@@ -6,8 +6,7 @@
 class Mirror : public GameEntity {
  public:
   Mirror() {
-    body = new sf::RectangleShape(Vector2f(60, 60));
-    // body->setPosition(Vector2f(0, 0));
+    body = new sf::RectangleShape(Vector2f(64, 64));
     body->setFillColor(sf::Color::White);
   }
   Mirror(Vector2f initialPosition) : Mirror() {
