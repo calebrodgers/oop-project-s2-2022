@@ -3,7 +3,7 @@
 #include "Game.h"
 
 int main() {
-  Game game(1000, 600, "Game");
+  Game game(600, 600, "Game");
 
   game.run();
 
