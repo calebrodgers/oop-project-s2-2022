@@ -13,8 +13,8 @@ class Game {
   sf::RenderWindow* window;
   Player* pyr;
   BorderWall* border;
-  Mirror* mir1;
-  Mirror* mir2;
+  int numOfMirrors = 0;
+  Mirror** mirrors;
 
  public:
   Game(int size_x, int size_y, std::string window_name) {
@@ -22,8 +22,13 @@ class Game {
   }
 
   void run() {
-    mir1 = new Mirror(Vector2f(64, 64));
-    mir2 = new Mirror(Vector2f(512, 192));
+    numOfMirrors = 3;
+    mirrors = new Mirror*[numOfMirrors];
+
+    mirrors[0] = new Mirror(Vector2f(128, 256));
+    mirrors[1] = new Mirror(Vector2f(128, 384));
+    mirrors[2] = new Mirror(Vector2f(512, 192));
+
     pyr = new Player();
     border = new BorderWall(704);
 
@@ -40,7 +45,7 @@ class Game {
 
       if (!wasWPressed) {
         if (Keyboard::isKeyPressed(Keyboard::W)) {
-          pyr->move(Vector2f(0, -64), 704, mir2);
+          pyr->move(Vector2f(0, -64), 704, numOfMirrors, mirrors);
           wasWPressed = true;
         }
       } else if (!Keyboard::isKeyPressed(Keyboard::W)) {
@@ -49,7 +54,7 @@ class Game {
 
       if (!wasAPressed) {
         if (Keyboard::isKeyPressed(Keyboard::A)) {
-          pyr->move(Vector2f(-64, 0), 704, mir2);
+          pyr->move(Vector2f(-64, 0), 704, numOfMirrors, mirrors);
           wasAPressed = true;
         }
       } else if (!Keyboard::isKeyPressed(Keyboard::A)) {
@@ -58,7 +63,7 @@ class Game {
 
       if (!wasSPressed) {
         if (Keyboard::isKeyPressed(Keyboard::S)) {
-          pyr->move(Vector2f(0, 64), 704, mir2);
+          pyr->move(Vector2f(0, 64), 704, numOfMirrors, mirrors);
           wasSPressed = true;
         }
       } else if (!Keyboard::isKeyPressed(Keyboard::S)) {
@@ -67,7 +72,7 @@ class Game {
 
       if (!wasDPressed) {
         if (Keyboard::isKeyPressed(Keyboard::D)) {
-          pyr->move(Vector2f(64, 0), 704, mir2);
+          pyr->move(Vector2f(64, 0), 704, numOfMirrors, mirrors);
           wasDPressed = true;
         }
       } else if (!Keyboard::isKeyPressed(Keyboard::D)) {
@@ -76,10 +81,12 @@ class Game {
 
       window->clear(sf::Color::White);
 
-      border->draw(window);
-      mir1->draw(window);
-      mir2->draw(window);
       pyr->draw(window);
+
+      border->draw(window);
+      for (int i = 0; i < numOfMirrors; i++) {
+        mirrors[i]->draw(window);
+      }
 
       window->display();
     }

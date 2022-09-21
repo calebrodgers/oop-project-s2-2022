@@ -13,15 +13,19 @@ class Player : public GameEntity {
     body->setFillColor(sf::Color::Blue);
   }
 
-  void move(Vector2f amnt, int winSize, Mirror* mirror) {
+  void move(Vector2f amnt, int winSize, int numOfMirrors, Mirror** mirrors) {
     body->move(amnt);
     float x = body->getPosition().x;
     float y = body->getPosition().y;
     if (x == 0 || y == 0 || x == winSize - 64 || y == winSize - 64) {
       body->move(Vector2f(-amnt.x, -amnt.y));
-    } else if (x == mirror->getPos().x && y == mirror->getPos().y){
-      if (mirror->move(amnt, winSize) == false) {
-        body->move(Vector2f(-amnt.x, -amnt.y));
+    }
+
+    for (int i = 0; i < numOfMirrors; i++) {
+      if (x == mirrors[i]->getPos().x && y == mirrors[i]->getPos().y) {
+        if (mirrors[i]->move(amnt, winSize) == false) {
+          body->move(Vector2f(-amnt.x, -amnt.y));
+        }
       }
     }
   }
