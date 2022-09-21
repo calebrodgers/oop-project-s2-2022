@@ -26,14 +26,19 @@ class Mirror : public GameEntity {
     }
 
     int mirrorCount = 0;
+    int checkMirror = 0;
     for (int i = 0; i < numOfMirrors; i++) {
       if (body->getPosition() == mirrors[i]->getPos()) {
         mirrorCount++;
+        checkMirror = i;
       }
     }
     if (mirrorCount > 1) {
-      body->move(Vector2f(-amnt.x, -amnt.y));
-      return false;
+      if (mirrors[checkMirror]->move(amnt, winSize, numOfMirrors, mirrors) ==
+          false) {
+        body->move(Vector2f(-amnt.x, -amnt.y));
+        return false;
+      }
     }
     return true;
   }
