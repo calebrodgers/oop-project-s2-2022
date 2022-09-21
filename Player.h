@@ -23,7 +23,8 @@ class Player : public GameEntity {
 
     for (int i = 0; i < numOfMirrors; i++) {
       if (x == mirrors[i]->getPos().x && y == mirrors[i]->getPos().y) {
-        if (mirrors[i]->move(amnt, winSize, numOfMirrors, mirrors) == false) {
+        if (mirrors[i]->move(amnt, winSize, numOfMirrors, mirrors, -1) ==
+            false) {
           body->move(Vector2f(-amnt.x, -amnt.y));
         }
       }
