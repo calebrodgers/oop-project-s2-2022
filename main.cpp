@@ -3,7 +3,7 @@
 #include "Game.h"
 
 int main() {
-  Game game(704, 704, "Natural Reflection");
+  Game game(768, 768, "Natural Reflection");
 
   game.run();
 
