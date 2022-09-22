@@ -11,21 +11,21 @@ class Game {
  private:
   sf::RenderWindow* window;
   int currentLevel;
-  int totalLevels;
+  int numOfLevels;
   Level** levels;
   bool wasLPressed = false;
 
  public:
-  Game(int size_x, int size_y, std::string window_name) {
+  Game(int size_x, int size_y, std::string window_name, std::string levelsFile,
+       int startLevel, int numOfLevels) {
     window = new sf::RenderWindow(VideoMode(size_x, size_y), window_name);
+    this->currentLevel = startLevel;
+    this->numOfLevels = numOfLevels;
+    levels = new Level*[numOfLevels];
+    levels[currentLevel] = new Level(levelsFile, currentLevel);
   }
 
   void run() {
-    currentLevel = 0;
-    totalLevels = 3;
-    levels = new Level*[totalLevels];
-    levels[currentLevel] = new Level("levels.nrlvl", currentLevel);
-
     while (window->isOpen()) {
       sf::Event event;
       while (window->pollEvent(event)) {
@@ -35,7 +35,7 @@ class Game {
       if (!wasLPressed) {
         if (Keyboard::isKeyPressed(Keyboard::L)) {
           wasLPressed = true;
-          if (currentLevel != totalLevels - 1) {
+          if (currentLevel != numOfLevels - 1) {
             levels[currentLevel + 1] =
                 new Level("levels.nrlvl", currentLevel + 1);
             currentLevel++;

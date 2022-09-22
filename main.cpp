@@ -3,7 +3,7 @@
 #include "Game.h"
 
 int main() {
-  Game game(768, 768, "Natural Reflection");
+  Game game(768, 768, "Natural Reflection", "levels.nrlvl", 0, 3);
 
   game.run();
 
