@@ -76,6 +76,8 @@ class Player : public GameEntity {
       wasDPressed = false;
     }
   }
+
+  Vector2f getPos() { return body->getPosition(); }
 };
 
 #endif

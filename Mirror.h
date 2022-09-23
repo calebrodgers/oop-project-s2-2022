@@ -4,13 +4,31 @@
 #include "GameEntity.h"
 
 class Mirror : public GameEntity {
+ private:
+  char direction;
+
  public:
   Mirror() {
     body = new sf::RectangleShape(Vector2f(64, 64));
     body->setFillColor(sf::Color::Green);
   }
-  Mirror(Vector2f initialPosition) : Mirror() {
+  Mirror(Vector2f initialPosition, char _direction) : Mirror() {
     body->setPosition(initialPosition);
+    direction = _direction;
+    switch (direction) {
+      case 'N':
+        body->setFillColor(sf::Color::Red);
+        break;
+      case 'E':
+        body->setFillColor(sf::Color::Yellow);
+        break;
+      case 'S':
+        body->setFillColor(sf::Color::Green);
+        break;
+      case 'W':
+        body->setFillColor(sf::Color::Magenta);
+        break;
+    }
   }
 
   Vector2f getPos() { return body->getPosition(); }
@@ -50,6 +68,8 @@ class Mirror : public GameEntity {
     }
     return true;
   }
+
+  char getDirection() { return direction; };
 };
 
 #endif
