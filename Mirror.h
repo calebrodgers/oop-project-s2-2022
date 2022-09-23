@@ -6,29 +6,43 @@
 class Mirror : public GameEntity {
  private:
   char direction;
+  ConvexShape* triangle;
 
  public:
   Mirror() {
     body = new sf::RectangleShape(Vector2f(64, 64));
-    body->setFillColor(sf::Color::Green);
+    body->setFillColor(sf::Color::Cyan);
   }
   Mirror(Vector2f initialPosition, char _direction) : Mirror() {
     body->setPosition(initialPosition);
     direction = _direction;
+    triangle = new sf::ConvexShape;
+    triangle->setPointCount(3);
+    direction = _direction;
     switch (direction) {
       case 'N':
-        body->setFillColor(sf::Color::Red);
+        triangle->setPoint(0, Vector2f(0, 0));
+        triangle->setPoint(1, Vector2f(0, 64));
+        triangle->setPoint(2, Vector2f(64, 64));
         break;
       case 'E':
-        body->setFillColor(sf::Color::Yellow);
+        triangle->setPoint(0, Vector2f(0, 0));
+        triangle->setPoint(1, Vector2f(0, 64));
+        triangle->setPoint(2, Vector2f(64, 0));
         break;
       case 'S':
-        body->setFillColor(sf::Color::Green);
+        triangle->setPoint(0, Vector2f(0, 0));
+        triangle->setPoint(1, Vector2f(64, 64));
+        triangle->setPoint(2, Vector2f(64, 0));
         break;
       case 'W':
-        body->setFillColor(sf::Color::Magenta);
+        triangle->setPoint(0, Vector2f(0, 64));
+        triangle->setPoint(1, Vector2f(64, 64));
+        triangle->setPoint(2, Vector2f(64, 0));
         break;
     }
+    triangle->setFillColor(sf::Color(230, 230, 230));
+    triangle->setPosition(initialPosition);
   }
 
   Vector2f getPos() { return body->getPosition(); }
@@ -43,11 +57,13 @@ class Mirror : public GameEntity {
     }
 
     body->move(amnt);
+    triangle->move(amnt);
     float x = body->getPosition().x;
     float y = body->getPosition().y;
 
     if (x == 0 || y == 0 || x == winSize - 64 || y == winSize - 64) {
       body->move(Vector2f(-amnt.x, -amnt.y));
+      triangle->move(Vector2f(-amnt.x, -amnt.y));
       return false;
     }
 
@@ -63,10 +79,16 @@ class Mirror : public GameEntity {
       if (mirrors[checkMirror]->move(amnt, winSize, numOfMirrors, mirrors,
                                      skipMirror) == false) {
         body->move(Vector2f(-amnt.x, -amnt.y));
+        triangle->move(Vector2f(-amnt.x, -amnt.y));
         return false;
       }
     }
     return true;
+  }
+
+  void draw(RenderWindow* window) {
+    window->draw(*body);
+    window->draw(*triangle);
   }
 
   char getDirection() { return direction; };
