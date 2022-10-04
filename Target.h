@@ -10,6 +10,10 @@ class Target : public BorderEntity {
     body->setFillColor(sf::Color::Yellow);
   }
   Target(Vector2f position) : Target() { body->setPosition(position); }
+  void hit() {
+    isHit = true;
+    body->setFillColor(sf::Color::Green);
+  }
 };
 
 #endif

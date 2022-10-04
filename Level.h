@@ -11,10 +11,12 @@
 #include "Mirror.h"
 #include "Player.h"
 #include "Target.h"
+#include "Wall.h"
 
 class Level {
  private:
   int numOfMirrors;
+  int numOfWalls;
   int countLight;
   Mirror** mirrors;
   Player* player;
@@ -22,6 +24,7 @@ class Level {
   Emitter* emitter;
   Target* target;
   Light** light;
+  Wall** walls;
 
  public:
   Level(std::string fileName, int levelIdx) {
@@ -48,6 +51,9 @@ class Level {
     int mirrorIdx = 0;
     mirrors = new Mirror*[numOfMirrors];
 
+    int wallIdx = 0;
+    walls = new Wall*[numOfWalls];
+
     for (int i = levelIdx * 12; i < levelIdx * 12 + 12; i++) {
       for (int j = 0; j < 12; j++) {
         if (lines[i][j] == 'N' || lines[i][j] == 'E' || lines[i][j] == 'S' ||
@@ -65,6 +71,11 @@ class Level {
         if (lines[i][j] == 'e') {
           emitter =
               new Emitter(Vector2f(64 * j, 64 * (i - (levelIdx * 12))), 768);
+        }
+        if (lines[i][j] == 'w') {
+          walls[wallIdx] = new Wall(
+              Vector2f(64 * j, 64 * (i - (levelIdx * 12))));
+          wallIdx++;
         }
       }
     }

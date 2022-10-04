@@ -4,7 +4,7 @@
 #include "BorderEntity.h"
 #include "Light.h"
 
-class Emitter : public BorderEntity {
+class Emitter : public GameEntity {
  private:
   Vector2f lightInitialVelocity;
   int countLight;
