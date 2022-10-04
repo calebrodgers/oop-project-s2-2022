@@ -5,6 +5,7 @@
 #include "Level.h"
 #include "Mirror.h"
 #include "Player.h"
+#include "Wall.h"
 
 class Light : public GameEntity {
  private:
@@ -12,7 +13,7 @@ class Light : public GameEntity {
 
  public:
   Light(Vector2f previousPos, Vector2f previousVelocity, Mirror** mirrors,
-        Player* player, int winSize, int numOfMirrors) {
+        Player* player, int winSize, int numOfMirrors, Wall** walls, int numOfWalls) {
     body = new sf::RectangleShape(Vector2f(64, 64));
     velocity = previousVelocity;
     body->setPosition(previousPos + velocity);
@@ -67,6 +68,14 @@ class Light : public GameEntity {
             break;
         }
       }
+    }
+
+    for (int i = 0; i < numOfWalls; i++) {
+      if (body->getPosition().x == walls[i]->getPos().x &&
+          body->getPosition().y == walls[i]->getPos().y) {
+            velocity = Vector2f(0, 0);
+            walls[i]->hit();
+          }
     }
   }
 

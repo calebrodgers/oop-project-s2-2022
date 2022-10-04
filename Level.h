@@ -47,6 +47,16 @@ class Level {
       }
     }
 
+    // Count walls in level
+    numOfWalls = 0;
+    for (int i = levelIdx * 12; i < levelIdx * 12 + 12; i++) {
+      for (int j = 0; j < 12; j++) {
+        if (lines[i][j] == 'w') {
+          numOfWalls++;
+        }
+      }
+    }
+
     // Create game objects
     int mirrorIdx = 0;
     mirrors = new Mirror*[numOfMirrors];
@@ -73,9 +83,9 @@ class Level {
               new Emitter(Vector2f(64 * j, 64 * (i - (levelIdx * 12))), 768);
         }
         if (lines[i][j] == 'w') {
-          walls[wallIdx] = new Wall(
-              Vector2f(64 * j, 64 * (i - (levelIdx * 12))));
+          walls[wallIdx] = new Wall(Vector2f(64 * j, 64 * (i - (levelIdx * 12))));
           wallIdx++;
+          
         }
       }
     }
@@ -92,7 +102,7 @@ class Level {
       if (countLight == 0) {
         light[countLight] =
             new Light(emitter->getPos(), emitter->getInitialVelocity(), mirrors,
-                      player, 768, numOfMirrors);
+                      player, 768, numOfMirrors, walls, numOfWalls);
         if (light[countLight]->getVelocity() == Vector2f(0, 0)) {
           lightMoving = false;
         }
@@ -100,7 +110,8 @@ class Level {
       } else {
         light[countLight] = new Light(light[countLight - 1]->getPos(),
                                       light[countLight - 1]->getVelocity(),
-                                      mirrors, player, 768, numOfMirrors);
+                                      mirrors, player, 768, numOfMirrors, 
+                                      walls, numOfWalls);
         if (light[countLight]->getVelocity() == Vector2f(0, 0)) {
           lightMoving = false;
         }
@@ -117,10 +128,15 @@ class Level {
       mirrors[i]->draw(window);
     }
 
+    for (int i = 0; i < 1; i++) {
+      walls[i]->draw(window);
+    }
+
     player->draw(window);
     border->draw(window);
     target->draw(window);
     emitter->draw(window);
+    
   }
 
   int getNumOfMirrors() { return numOfMirrors; }
@@ -134,6 +150,7 @@ class Level {
   ~Level() {
     delete player;
     delete[] mirrors;
+    delete[] walls;
   }
 };
 
