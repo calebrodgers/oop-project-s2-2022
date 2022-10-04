@@ -61,7 +61,7 @@ class Mirror : public GameEntity {
     float x = body->getPosition().x;
     float y = body->getPosition().y;
 
-    if (x == 64 || y == 64 || x == winSize - 128 || y == winSize - 128) {
+    if (x == 0 || y == 0 || x == winSize - 64 || y == winSize - 64) {
       body->move(Vector2f(-amnt.x, -amnt.y));
       triangle->move(Vector2f(-amnt.x, -amnt.y));
       return false;
