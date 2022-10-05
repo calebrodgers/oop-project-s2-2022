@@ -21,7 +21,7 @@ class Wall : public BorderEntity {
             body->setFillColor(sf::Color{201, 37, 34});
         }
 
-        Vector2f getPos() { return body->getPosition(); }
+        
 };
 
 #endif

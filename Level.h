@@ -102,7 +102,7 @@ class Level {
       if (countLight == 0) {
         light[countLight] =
             new Light(emitter->getPos(), emitter->getInitialVelocity(), mirrors,
-                      player, 768, numOfMirrors, walls, numOfWalls);
+                      player, 768, numOfMirrors, walls, numOfWalls, target);
         if (light[countLight]->getVelocity() == Vector2f(0, 0)) {
           lightMoving = false;
         }
@@ -111,7 +111,7 @@ class Level {
         light[countLight] = new Light(light[countLight - 1]->getPos(),
                                       light[countLight - 1]->getVelocity(),
                                       mirrors, player, 768, numOfMirrors, 
-                                      walls, numOfWalls);
+                                      walls, numOfWalls, target);
         if (light[countLight]->getVelocity() == Vector2f(0, 0)) {
           lightMoving = false;
         }
