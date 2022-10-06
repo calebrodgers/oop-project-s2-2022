@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <fstream>
+#include <vector>
 
 #include "BorderWall.h"
 #include "Emitter.h"
@@ -24,7 +25,7 @@ class Level {
   BorderWall* border;
   Emitter* emitter;
   Target* target;
-  Light** light;
+  std::vector<Light*> light;
   Wall** walls;
 
  public:
@@ -84,42 +85,44 @@ class Level {
               new Emitter(Vector2f(64 * j, 64 * (i - (levelIdx * 12))), 768);
         }
         if (lines[i][j] == 'w') {
-          walls[wallIdx] = new Wall(Vector2f(64 * j, 64 * (i - (levelIdx * 12))));
+          walls[wallIdx] =
+              new Wall(Vector2f(64 * j, 64 * (i - (levelIdx * 12))));
           wallIdx++;
-          
         }
       }
     }
     border = new BorderWall(768);
-    light = new Light*[100];
   }
 
   void updateAndDraw(RenderWindow* window) {
     int lightMoving = true;
-    countLight = 0;
-    delete[] light;
-    light = new Light*[100];
+
+    for (int i = 0; i < light.size(); i++) {
+      delete light[i];
+    }
+    light.clear();
+
     while (lightMoving == true) {
       if (countLight == 0) {
-        light[countLight] =
+        light.push_back(
             new Light(emitter->getPos(), emitter->getInitialVelocity(), mirrors,
-                      player, 768, numOfMirrors, walls, numOfWalls, target);
+                      player, 768, numOfMirrors, walls, numOfWalls, target));
         if (light[countLight]->getVelocity() == Vector2f(0, 0)) {
           lightMoving = false;
         }
         countLight++;
       } else {
-        light[countLight] = new Light(light[countLight - 1]->getPos(),
-                                      light[countLight - 1]->getVelocity(),
-                                      mirrors, player, 768, numOfMirrors, 
-                                      walls, numOfWalls, target);
+        light.push_back(new Light(light[countLight - 1]->getPos(),
+                                  light[countLight - 1]->getVelocity(), mirrors,
+                                  player, 768, numOfMirrors, walls, numOfWalls,
+                                  target));
         if (light[countLight]->getVelocity() == Vector2f(0, 0)) {
           lightMoving = false;
         }
         countLight++;
       }
     }
-    for (int i = 0; i < countLight; i++) {
+    for (int i = 0; i < light.size() - 1; i++) {
       light[i]->draw(window);
     }
     countLight = 0;
@@ -141,7 +144,6 @@ class Level {
     if (target->getHit()) {
       done = true;
     }
-    
   }
 
   int getNumOfMirrors() { return numOfMirrors; }
@@ -150,9 +152,7 @@ class Level {
 
   Player* getPlayer() { return player; }
 
-  int getLightCount() { return countLight; }
-
-  bool isDone() { return done; } 
+  bool isDone() { return done; }
 
   ~Level() {
     delete player;
