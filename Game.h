@@ -13,7 +13,7 @@ class Game {
   int currentLevel;
   int numOfLevels;
   Level** levels;
-  bool wasLPressed = false;
+  bool wasRPressed = false;
 
  public:
   Game(int size_x, int size_y, std::string window_name, std::string levelsFile,
@@ -31,26 +31,22 @@ class Game {
       while (window->pollEvent(event)) {
         if (event.type == sf::Event::Closed) window->close();
       }
-      
+
       if (levels[currentLevel]->isDone()) {
         if (currentLevel != numOfLevels - 1) {
-              levels[currentLevel + 1] =
-                  new Level("levels.nrlvl", currentLevel + 1);
-              currentLevel++;
+          levels[currentLevel + 1] =
+              new Level("levels.nrlvl", currentLevel + 1);
+          currentLevel++;
         }
       }
 
-      if (!wasLPressed) {
-        if (Keyboard::isKeyPressed(Keyboard::L)) {
-          wasLPressed = true;
-          if (currentLevel != numOfLevels - 1) {
-            levels[currentLevel + 1] =
-                new Level("levels.nrlvl", currentLevel + 1);
-            currentLevel++;
-          }
+      if (!wasRPressed) {
+        if (Keyboard::isKeyPressed(Keyboard::R)) {
+          wasRPressed = true;
+          levels[currentLevel] = new Level("levels.nrlvl", currentLevel);
         }
-      } else if (!Keyboard::isKeyPressed(Keyboard::L)) {
-        wasLPressed = false;
+      } else if (!Keyboard::isKeyPressed(Keyboard::R)) {
+        wasRPressed = false;
       }
 
       // Clear Window
