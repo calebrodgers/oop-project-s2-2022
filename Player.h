@@ -38,6 +38,12 @@ class Player : public GameEntity {
         }
       }
     }
+
+    for (int i = 0; i < numOfWalls; i++) {
+      if (x == walls[i]->getPos().x && y == walls[i]->getPos().y) {
+        body->move(Vector2f(-amnt.x, -amnt.y));
+      }
+    }
   }
 
   void update(int numOfMirrors, Mirror** mirrors, Wall** walls, int numOfWalls) {

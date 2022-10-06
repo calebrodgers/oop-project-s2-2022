@@ -12,6 +12,7 @@ class GameEntity {
 
  public:
   void draw(RenderWindow* window) { window->draw(*body); }
+  virtual Vector2f getPos() { return body->getPosition(); }
 };
 
 #endif

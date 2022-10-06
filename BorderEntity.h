@@ -9,7 +9,7 @@ class BorderEntity : public GameEntity {
  public:
     bool getHit() { return isHit; }
     virtual void hit() = 0;
-    Vector2f getPos() { return body->getPosition(); }
+    
 };
 
 #endif
