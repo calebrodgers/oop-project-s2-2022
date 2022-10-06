@@ -5,8 +5,8 @@
 #include "Level.h"
 #include "Mirror.h"
 #include "Player.h"
-#include "Wall.h"
 #include "Target.h"
+#include "Wall.h"
 
 class Light : public GameEntity {
  private:
@@ -14,7 +14,8 @@ class Light : public GameEntity {
 
  public:
   Light(Vector2f previousPos, Vector2f previousVelocity, Mirror** mirrors,
-        Player* player, int winSize, int numOfMirrors, Wall** walls, int numOfWalls, Target* target) {
+        Player* player, int winSize, int numOfMirrors, Wall** walls,
+        int numOfWalls, Target* target) {
     body = new sf::RectangleShape(Vector2f(64, 64));
     velocity = previousVelocity;
     body->setPosition(previousPos + velocity);
@@ -34,7 +35,7 @@ class Light : public GameEntity {
           case 'N':
             if (velocity.y == 64) {
               velocity = Vector2f(64, 0);
-            } else if (velocity.x == -64, 0) {
+            } else if (velocity.x == -64) {
               velocity = Vector2f(0, -64);
             } else {
               velocity = Vector2f(0, 0);
@@ -74,16 +75,16 @@ class Light : public GameEntity {
     for (int i = 0; i < numOfWalls; i++) {
       if (body->getPosition().x == walls[i]->getPos().x &&
           body->getPosition().y == walls[i]->getPos().y) {
-            velocity = Vector2f(0, 0);
-            walls[i]->hit();
-          }
+        velocity = Vector2f(0, 0);
+        walls[i]->hit();
+      }
     }
 
     if (body->getPosition().x == target->getPos().x &&
-          body->getPosition().y == target->getPos().y) {
-            velocity = Vector2f(0, 0);
-            target->hit();
-          }
+        body->getPosition().y == target->getPos().y) {
+      velocity = Vector2f(0, 0);
+      target->hit();
+    }
   }
 
   Vector2f getPos() { return body->getPosition(); }
