@@ -4,6 +4,7 @@
 #include "BorderWall.h"
 #include "GameEntity.h"
 #include "Mirror.h"
+#include "Wall.h"
 
 class Player : public GameEntity {
  private:
@@ -21,7 +22,7 @@ class Player : public GameEntity {
 
   Player(Vector2f spawnPoint) : Player() { body->setPosition(spawnPoint); }
 
-  void move(Vector2f amnt, int winSize, int numOfMirrors, Mirror** mirrors) {
+  void move(Vector2f amnt, int winSize, int numOfMirrors, Mirror** mirrors, Wall** walls, int numOfWalls) {
     body->move(amnt);
     float x = body->getPosition().x;
     float y = body->getPosition().y;
@@ -31,7 +32,7 @@ class Player : public GameEntity {
 
     for (int i = 0; i < numOfMirrors; i++) {
       if (x == mirrors[i]->getPos().x && y == mirrors[i]->getPos().y) {
-        if (mirrors[i]->move(amnt, winSize, numOfMirrors, mirrors, -1) ==
+        if (mirrors[i]->move(amnt, winSize, numOfMirrors, mirrors, -1, walls, numOfWalls) ==
             false) {
           body->move(Vector2f(-amnt.x, -amnt.y));
         }
@@ -39,10 +40,10 @@ class Player : public GameEntity {
     }
   }
 
-  void update(int numOfMirrors, Mirror** mirrors) {
+  void update(int numOfMirrors, Mirror** mirrors, Wall** walls, int numOfWalls) {
     if (!wasWPressed) {
       if (Keyboard::isKeyPressed(Keyboard::W)) {
-        move(Vector2f(0, -64), 768, numOfMirrors, mirrors);
+        move(Vector2f(0, -64), 768, numOfMirrors, mirrors, walls, numOfWalls);
         wasWPressed = true;
       }
     } else if (!Keyboard::isKeyPressed(Keyboard::W)) {
@@ -51,7 +52,7 @@ class Player : public GameEntity {
 
     if (!wasAPressed) {
       if (Keyboard::isKeyPressed(Keyboard::A)) {
-        move(Vector2f(-64, 0), 768, numOfMirrors, mirrors);
+        move(Vector2f(-64, 0), 768, numOfMirrors, mirrors, walls, numOfWalls);
         wasAPressed = true;
       }
     } else if (!Keyboard::isKeyPressed(Keyboard::A)) {
@@ -60,7 +61,7 @@ class Player : public GameEntity {
 
     if (!wasSPressed) {
       if (Keyboard::isKeyPressed(Keyboard::S)) {
-        move(Vector2f(0, 64), 768, numOfMirrors, mirrors);
+        move(Vector2f(0, 64), 768, numOfMirrors, mirrors, walls, numOfWalls);
         wasSPressed = true;
       }
     } else if (!Keyboard::isKeyPressed(Keyboard::S)) {
@@ -69,7 +70,7 @@ class Player : public GameEntity {
 
     if (!wasDPressed) {
       if (Keyboard::isKeyPressed(Keyboard::D)) {
-        move(Vector2f(64, 0), 768, numOfMirrors, mirrors);
+        move(Vector2f(64, 0), 768, numOfMirrors, mirrors, walls, numOfWalls);
         wasDPressed = true;
       }
     } else if (!Keyboard::isKeyPressed(Keyboard::D)) {

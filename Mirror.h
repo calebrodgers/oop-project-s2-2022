@@ -2,6 +2,7 @@
 #define MIRROR_H
 
 #include "GameEntity.h"
+#include "Wall.h"
 
 class Mirror : public GameEntity {
  private:
@@ -48,7 +49,7 @@ class Mirror : public GameEntity {
   Vector2f getPos() { return body->getPosition(); }
 
   bool move(Vector2f amnt, int winSize, int numOfMirrors, Mirror** mirrors,
-            int nextSkip) {
+            int nextSkip, Wall** walls, int numOfWalls) {
     int skipMirror = 0;
     for (int i = 0; i < numOfMirrors; i++) {
       if (body->getPosition() == mirrors[i]->getPos() && i != nextSkip) {
@@ -77,12 +78,22 @@ class Mirror : public GameEntity {
     }
     if (mirrorCount == 1) {
       if (mirrors[checkMirror]->move(amnt, winSize, numOfMirrors, mirrors,
-                                     skipMirror) == false) {
+                                     skipMirror, walls, numOfWalls) == false) {
         body->move(Vector2f(-amnt.x, -amnt.y));
         triangle->move(Vector2f(-amnt.x, -amnt.y));
         return false;
       }
     }
+
+    // detect if mirror is trying to move into a wall block
+    for (int i = 0; i < numOfWalls; i++) {
+      if (body->getPosition() == walls[i]->getPos()) {
+        body->move(Vector2f(-amnt.x, -amnt.y));
+        triangle->move(Vector2f(-amnt.x, -amnt.y));
+        return false;
+      }
+    }
+
     return true;
   }
 

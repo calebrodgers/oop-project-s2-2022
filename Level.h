@@ -124,7 +124,7 @@ class Level {
     }
     countLight = 0;
 
-    player->update(numOfMirrors, mirrors);
+    player->update(numOfMirrors, mirrors, walls, numOfWalls);
     for (int i = 0; i < numOfMirrors; i++) {
       mirrors[i]->draw(window);
     }
