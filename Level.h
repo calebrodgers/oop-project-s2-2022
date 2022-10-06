@@ -18,6 +18,7 @@ class Level {
   int numOfMirrors;
   int numOfWalls;
   int countLight;
+  bool done;
   Mirror** mirrors;
   Player* player;
   BorderWall* border;
@@ -136,6 +137,10 @@ class Level {
     border->draw(window);
     target->draw(window);
     emitter->draw(window);
+
+    if (target->getHit()) {
+      done = true;
+    }
     
   }
 
@@ -146,6 +151,8 @@ class Level {
   Player* getPlayer() { return player; }
 
   int getLightCount() { return countLight; }
+
+  bool isDone() { return done; } 
 
   ~Level() {
     delete player;

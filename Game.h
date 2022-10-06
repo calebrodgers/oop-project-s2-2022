@@ -31,6 +31,14 @@ class Game {
       while (window->pollEvent(event)) {
         if (event.type == sf::Event::Closed) window->close();
       }
+      
+      if (levels[currentLevel]->isDone()) {
+        if (currentLevel != numOfLevels - 1) {
+              levels[currentLevel + 1] =
+                  new Level("levels.nrlvl", currentLevel + 1);
+              currentLevel++;
+        }
+      }
 
       if (!wasLPressed) {
         if (Keyboard::isKeyPressed(Keyboard::L)) {

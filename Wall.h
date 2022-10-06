@@ -10,6 +10,7 @@ class Wall : public BorderEntity {
         Wall() {
             body = new RectangleShape(Vector2f(64, 64));
             body->setFillColor(sf::Color{125, 21, 19});
+            isHit = false;
         }
 
         Wall(Vector2f initialPosition): Wall() {
