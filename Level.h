@@ -132,7 +132,7 @@ class Level {
       mirrors[i]->draw(window);
     }
 
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < numOfWalls; i++) {
       walls[i]->draw(window);
     }
 
