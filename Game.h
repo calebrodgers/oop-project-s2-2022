@@ -4,8 +4,10 @@
 #include <SFML/Graphics.hpp>
 
 #include "BorderWall.h"
+#include "Cutscene.h"
 #include "GameEntity.h"
 #include "Level.h"
+#include "Scoreboard.h"
 
 class Game {
  private:
@@ -13,6 +15,8 @@ class Game {
   int currentLevel;
   int numOfLevels;
   Level** levels;
+  Scoreboard* scoreboard;
+  Cutscene* cutscene;
   bool wasRPressed = false;
 
  public:
@@ -23,6 +27,7 @@ class Game {
     this->numOfLevels = numOfLevels;
     levels = new Level*[numOfLevels];
     levels[currentLevel] = new Level(levelsFile, currentLevel);
+    scoreboard = new Scoreboard(Vector2f(10, 2));
   }
 
   void run() {
@@ -33,6 +38,13 @@ class Game {
       }
 
       if (levels[currentLevel]->isDone()) {
+        window->clear(sf::Color::White);
+        levels[currentLevel]->updateAndDraw(window);
+        window->display();
+        cutscene = new Cutscene(currentLevel);
+        cutscene->run(window);
+        delete cutscene;
+
         if (currentLevel != numOfLevels - 1) {
           levels[currentLevel + 1] =
               new Level("levels.nrlvl", currentLevel + 1);
@@ -53,6 +65,7 @@ class Game {
       window->clear(sf::Color::White);
 
       levels[currentLevel]->updateAndDraw(window);
+      scoreboard->updateAndDraw(currentLevel + 1, window);
 
       // Display Window
       window->display();

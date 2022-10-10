@@ -82,7 +82,7 @@ class Level {
         }
         if (lines[i][j] == 'e') {
           emitter =
-              new Emitter(Vector2f(64 * j, 64 * (i - (levelIdx * 12))), 768);
+              new Emitter(Vector2f(64 * j, 64 * (i - (levelIdx * 12))), 704);
         }
         if (lines[i][j] == 'w') {
           walls[wallIdx] =
