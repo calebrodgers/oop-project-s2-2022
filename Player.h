@@ -1,6 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include "Antitarget.h"
 #include "BorderWall.h"
 #include "GameEntity.h"
 #include "Mirror.h"
@@ -22,7 +23,10 @@ class Player : public GameEntity {
 
   Player(Vector2f spawnPoint) : Player() { body->setPosition(spawnPoint); }
 
-  void move(Vector2f amnt, int winSize, int numOfMirrors, Mirror** mirrors, Wall** walls, int numOfWalls) {
+  void move(Vector2f amnt, int winSize, int numOfMirrors, Mirror** mirrors,
+            Wall** walls, int numOfWalls, Antitarget** antitargets,
+            int numOfAntitargets) {
+    Vector2f initialPos = body->getPosition();
     body->move(amnt);
     float x = body->getPosition().x;
     float y = body->getPosition().y;
@@ -32,8 +36,8 @@ class Player : public GameEntity {
 
     for (int i = 0; i < numOfMirrors; i++) {
       if (x == mirrors[i]->getPos().x && y == mirrors[i]->getPos().y) {
-        if (mirrors[i]->move(amnt, winSize, numOfMirrors, mirrors, -1, walls, numOfWalls) ==
-            false) {
+        if (mirrors[i]->move(amnt, winSize, numOfMirrors, mirrors, -1, walls,
+                             numOfWalls) == false) {
           body->move(Vector2f(-amnt.x, -amnt.y));
         }
       }
@@ -44,12 +48,21 @@ class Player : public GameEntity {
         body->move(Vector2f(-amnt.x, -amnt.y));
       }
     }
+
+    for (int i = 0; i < numOfAntitargets; i++) {
+      if (x == antitargets[i]->getPos().x && y == antitargets[i]->getPos().y &&
+          body->getPosition() != initialPos) {
+        body->move(Vector2f(-amnt.x, -amnt.y));
+      }
+    }
   }
 
-  void update(int numOfMirrors, Mirror** mirrors, Wall** walls, int numOfWalls) {
+  void update(int numOfMirrors, Mirror** mirrors, Wall** walls, int numOfWalls,
+              Antitarget** antitargets, int numOfAntitargets) {
     if (!wasWPressed) {
       if (Keyboard::isKeyPressed(Keyboard::W)) {
-        move(Vector2f(0, -64), 768, numOfMirrors, mirrors, walls, numOfWalls);
+        move(Vector2f(0, -64), 768, numOfMirrors, mirrors, walls, numOfWalls,
+             antitargets, numOfAntitargets);
         wasWPressed = true;
       }
     } else if (!Keyboard::isKeyPressed(Keyboard::W)) {
@@ -58,7 +71,8 @@ class Player : public GameEntity {
 
     if (!wasAPressed) {
       if (Keyboard::isKeyPressed(Keyboard::A)) {
-        move(Vector2f(-64, 0), 768, numOfMirrors, mirrors, walls, numOfWalls);
+        move(Vector2f(-64, 0), 768, numOfMirrors, mirrors, walls, numOfWalls,
+             antitargets, numOfAntitargets);
         wasAPressed = true;
       }
     } else if (!Keyboard::isKeyPressed(Keyboard::A)) {
@@ -67,7 +81,8 @@ class Player : public GameEntity {
 
     if (!wasSPressed) {
       if (Keyboard::isKeyPressed(Keyboard::S)) {
-        move(Vector2f(0, 64), 768, numOfMirrors, mirrors, walls, numOfWalls);
+        move(Vector2f(0, 64), 768, numOfMirrors, mirrors, walls, numOfWalls,
+             antitargets, numOfAntitargets);
         wasSPressed = true;
       }
     } else if (!Keyboard::isKeyPressed(Keyboard::S)) {
@@ -76,7 +91,8 @@ class Player : public GameEntity {
 
     if (!wasDPressed) {
       if (Keyboard::isKeyPressed(Keyboard::D)) {
-        move(Vector2f(64, 0), 768, numOfMirrors, mirrors, walls, numOfWalls);
+        move(Vector2f(64, 0), 768, numOfMirrors, mirrors, walls, numOfWalls,
+             antitargets, numOfAntitargets);
         wasDPressed = true;
       }
     } else if (!Keyboard::isKeyPressed(Keyboard::D)) {

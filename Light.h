@@ -1,6 +1,7 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
+#include "Antitarget.h"
 #include "GameEntity.h"
 #include "Level.h"
 #include "Mirror.h"
@@ -15,7 +16,8 @@ class Light : public GameEntity {
  public:
   Light(Vector2f previousPos, Vector2f previousVelocity, Mirror** mirrors,
         Player* player, int winSize, int numOfMirrors, Wall** walls,
-        int numOfWalls, Target* target) {
+        int numOfWalls, Target* target, Antitarget** antitargets,
+        int numOfAntiTargets) {
     body = new sf::RectangleShape(Vector2f(64, 64));
     velocity = previousVelocity;
     body->setPosition(previousPos + velocity);
@@ -77,6 +79,14 @@ class Light : public GameEntity {
           body->getPosition().y == walls[i]->getPos().y) {
         velocity = Vector2f(0, 0);
         walls[i]->hit();
+      }
+    }
+
+    for (int i = 0; i < numOfAntiTargets; i++) {
+      if (body->getPosition().x == antitargets[i]->getPos().x &&
+          body->getPosition().y == antitargets[i]->getPos().y) {
+        velocity = Vector2f(0, 0);
+        antitargets[i]->hit();
       }
     }
 

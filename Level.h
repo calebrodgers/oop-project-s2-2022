@@ -22,6 +22,7 @@ class Level {
   int numOfAntitargets;
   int countLight;
   bool done;
+  bool reset;
   Mirror** mirrors;
   Player* player;
   BorderWall* border;
@@ -34,6 +35,7 @@ class Level {
  public:
   Level(std::string fileName, int levelIdx) {
     done = false;
+    reset = false;
     // Read in lines
     std::ifstream file(fileName);
     std::string lines[levelIdx * 12 + 12];
@@ -127,9 +129,10 @@ class Level {
 
     while (lightMoving == true) {
       if (countLight == 0) {
-        light.push_back(
-            new Light(emitter->getPos(), emitter->getInitialVelocity(), mirrors,
-                      player, 768, numOfMirrors, walls, numOfWalls, target));
+        light.push_back(new Light(emitter->getPos(),
+                                  emitter->getInitialVelocity(), mirrors,
+                                  player, 768, numOfMirrors, walls, numOfWalls,
+                                  target, antitargets, numOfAntitargets));
         if (light[countLight]->getVelocity() == Vector2f(0, 0)) {
           lightMoving = false;
         }
@@ -138,7 +141,7 @@ class Level {
         light.push_back(new Light(light[countLight - 1]->getPos(),
                                   light[countLight - 1]->getVelocity(), mirrors,
                                   player, 768, numOfMirrors, walls, numOfWalls,
-                                  target));
+                                  target, antitargets, numOfAntitargets));
         if (light[countLight]->getVelocity() == Vector2f(0, 0)) {
           lightMoving = false;
         }
@@ -150,7 +153,8 @@ class Level {
     }
     countLight = 0;
 
-    player->update(numOfMirrors, mirrors, walls, numOfWalls);
+    player->update(numOfMirrors, mirrors, walls, numOfWalls, antitargets,
+                   numOfAntitargets);
     for (int i = 0; i < numOfMirrors; i++) {
       mirrors[i]->draw(window);
     }
@@ -169,8 +173,13 @@ class Level {
     emitter->draw(window);
     player->draw(window);
 
+    for (int i = 0; i < numOfAntitargets; i++) {
+      if (antitargets[i]->getHit()) {
+        reset = true;
+      }
+    }
+
     if (target->getHit()) {
-      target->resetHit();
       done = true;
     }
   }
@@ -182,6 +191,8 @@ class Level {
   Player* getPlayer() { return player; }
 
   bool isDone() { return done; }
+
+  bool needsReset() { return reset; }
 
   ~Level() {
     delete player;

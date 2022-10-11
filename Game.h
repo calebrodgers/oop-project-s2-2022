@@ -41,8 +41,9 @@ class Game {
         window->clear(sf::Color::White);
         levels[currentLevel]->updateAndDraw(window);
         window->display();
-        cutscene = new Cutscene(currentLevel);
-        cutscene->run(window);
+        cutscene = new Cutscene(currentLevel, levels[currentLevel]->isDone(),
+                                wasRPressed);
+        cutscene->run(window, true);
         delete cutscene;
 
         if (currentLevel != numOfLevels - 1) {
@@ -52,9 +53,30 @@ class Game {
         }
       }
 
+      if (levels[currentLevel]->needsReset()) {
+        window->clear(sf::Color::White);
+        levels[currentLevel]->updateAndDraw(window);
+        window->display();
+        cutscene = new Cutscene(currentLevel, levels[currentLevel]->isDone(),
+                                wasRPressed);
+        cutscene->run(window, levels[currentLevel]->isDone());
+        delete cutscene;
+
+        levels[currentLevel] = new Level("levels.nrlvl", currentLevel);
+      }
+
       if (!wasRPressed) {
         if (Keyboard::isKeyPressed(Keyboard::R)) {
           wasRPressed = true;
+
+          window->clear(sf::Color::White);
+          levels[currentLevel]->updateAndDraw(window);
+          window->display();
+          cutscene = new Cutscene(currentLevel, levels[currentLevel]->isDone(),
+                                  wasRPressed);
+          cutscene->run(window, levels[currentLevel]->isDone());
+          delete cutscene;
+
           levels[currentLevel] = new Level("levels.nrlvl", currentLevel);
         }
       } else if (!Keyboard::isKeyPressed(Keyboard::R)) {

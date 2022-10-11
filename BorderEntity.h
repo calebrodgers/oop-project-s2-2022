@@ -9,7 +9,6 @@ class BorderEntity : public GameEntity {
 
  public:
   bool getHit() { return isHit; }
-  void resetHit() { isHit = false; }
   virtual void hit() = 0;
 };
 
