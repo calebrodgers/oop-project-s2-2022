@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_h
 
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <string>
 
@@ -18,6 +19,7 @@ class Game {
   Level** levels;
   Scoreboard* scoreboard;
   Cutscene* cutscene;
+  sf::Music* backgroundMusic;
   bool wasRPressed = false;
   std::string message;
 
@@ -30,9 +32,14 @@ class Game {
     levels = new Level*[numOfLevels];
     levels[currentLevel] = new Level(levelsFile, currentLevel);
     scoreboard = new Scoreboard(Vector2f(10, 2));
+    backgroundMusic = new sf::Music();
+    backgroundMusic->openFromFile("assets/sounds/nr_background_music.wav");
+    backgroundMusic->setLoop(true);
   }
 
   void run() {
+    backgroundMusic->play();
+
     while (window->isOpen()) {
       sf::Event event;
       while (window->pollEvent(event)) {
