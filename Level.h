@@ -5,6 +5,7 @@
 #include <fstream>
 #include <vector>
 
+#include "Antitarget.h"
 #include "BorderWall.h"
 #include "Emitter.h"
 #include "GameEntity.h"
@@ -18,6 +19,7 @@ class Level {
  private:
   int numOfMirrors;
   int numOfWalls;
+  int numOfAntitargets;
   int countLight;
   bool done;
   Mirror** mirrors;
@@ -27,6 +29,7 @@ class Level {
   Target* target;
   std::vector<Light*> light;
   Wall** walls;
+  Antitarget** antitargets;
 
  public:
   Level(std::string fileName, int levelIdx) {
@@ -59,12 +62,25 @@ class Level {
       }
     }
 
+    // Count antitargets in level
+    numOfAntitargets = 0;
+    for (int i = levelIdx * 12; i < levelIdx * 12 + 12; i++) {
+      for (int j = 0; j < 12; j++) {
+        if (lines[i][j] == 'a') {
+          numOfAntitargets++;
+        }
+      }
+    }
+
     // Create game objects
     int mirrorIdx = 0;
     mirrors = new Mirror*[numOfMirrors];
 
     int wallIdx = 0;
     walls = new Wall*[numOfWalls];
+
+    int antiIdx = 0;
+    antitargets = new Antitarget*[numOfAntitargets];
 
     for (int i = levelIdx * 12; i < levelIdx * 12 + 12; i++) {
       for (int j = 0; j < 12; j++) {
@@ -89,6 +105,11 @@ class Level {
               new Wall(Vector2f(64 * j, 64 * (i - (levelIdx * 12))));
           wallIdx++;
         }
+        if (lines[i][j] == 'a') {
+          antitargets[antiIdx] =
+              new Antitarget(Vector2f(64 * j, 64 * (i - (levelIdx * 12))));
+          antiIdx++;
+        }
       }
     }
     border = new BorderWall(768);
@@ -101,6 +122,7 @@ class Level {
       delete light[i];
     }
     light.clear();
+    countLight = 0;
 
     while (lightMoving == true) {
       if (countLight == 0) {
@@ -136,12 +158,18 @@ class Level {
       walls[i]->draw(window);
     }
 
-    player->draw(window);
     border->draw(window);
+
+    for (int i = 0; i < numOfAntitargets; i++) {
+      antitargets[i]->draw(window);
+    }
+
     target->draw(window);
     emitter->draw(window);
+    player->draw(window);
 
     if (target->getHit()) {
+      target->resetHit();
       done = true;
     }
   }
@@ -154,10 +182,13 @@ class Level {
 
   bool isDone() { return done; }
 
+  void resetDone() { done = false; }
+
   ~Level() {
     delete player;
     delete[] mirrors;
     delete[] walls;
+    delete target;
   }
 };
 

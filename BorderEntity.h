@@ -5,11 +5,12 @@
 
 class BorderEntity : public GameEntity {
  protected:
-    bool isHit;
+  bool isHit;
+
  public:
-    bool getHit() { return isHit; }
-    virtual void hit() = 0;
-    
+  bool getHit() { return isHit; }
+  void resetHit() { isHit = false; }
+  virtual void hit() = 0;
 };
 
 #endif

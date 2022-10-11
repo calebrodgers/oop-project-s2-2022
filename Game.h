@@ -2,6 +2,7 @@
 #define GAME_h
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 #include "BorderWall.h"
 #include "Cutscene.h"
@@ -38,6 +39,7 @@ class Game {
       }
 
       if (levels[currentLevel]->isDone()) {
+        levels[currentLevel]->resetDone();
         window->clear(sf::Color::White);
         levels[currentLevel]->updateAndDraw(window);
         window->display();
