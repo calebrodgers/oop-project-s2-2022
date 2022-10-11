@@ -33,6 +33,7 @@ class Level {
 
  public:
   Level(std::string fileName, int levelIdx) {
+    done = false;
     // Read in lines
     std::ifstream file(fileName);
     std::string lines[levelIdx * 12 + 12];
@@ -181,8 +182,6 @@ class Level {
   Player* getPlayer() { return player; }
 
   bool isDone() { return done; }
-
-  void resetDone() { done = false; }
 
   ~Level() {
     delete player;
