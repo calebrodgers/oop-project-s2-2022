@@ -42,12 +42,13 @@ class Game {
       if (levels[currentLevel]->isDone()) {
         window->clear(sf::Color::White);
         levels[currentLevel]->updateAndDraw(window);
+        scoreboard->updateAndDraw(currentLevel + 1, window);
         window->display();
         message = "LEVEL ";
         message.append(std::to_string(currentLevel + 1));
         message.append(" COMPLETE");
         cutscene = new Cutscene(message, levels[currentLevel]->isDone());
-        cutscene->run(window, true);
+        cutscene->run(window, levels[currentLevel]->isDone(), true);
         delete cutscene;
 
         if (currentLevel != numOfLevels - 1) {
@@ -60,10 +61,11 @@ class Game {
       if (levels[currentLevel]->needsReset()) {
         window->clear(sf::Color::White);
         levels[currentLevel]->updateAndDraw(window);
+        scoreboard->updateAndDraw(currentLevel + 1, window);
         window->display();
         message = "LEVEL FAILED";
         cutscene = new Cutscene(message, levels[currentLevel]->isDone());
-        cutscene->run(window, levels[currentLevel]->isDone());
+        cutscene->run(window, levels[currentLevel]->isDone(), true);
         delete cutscene;
 
         levels[currentLevel] = new Level("levels.nrlvl", currentLevel);
@@ -75,10 +77,11 @@ class Game {
 
           window->clear(sf::Color::White);
           levels[currentLevel]->updateAndDraw(window);
+          scoreboard->updateAndDraw(currentLevel + 1, window);
           window->display();
           message = "RESETTING LEVEL";
           cutscene = new Cutscene(message, levels[currentLevel]->isDone());
-          cutscene->run(window, levels[currentLevel]->isDone());
+          cutscene->run(window, levels[currentLevel]->isDone(), false);
           delete cutscene;
 
           levels[currentLevel] = new Level("levels.nrlvl", currentLevel);

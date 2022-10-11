@@ -29,11 +29,14 @@ class Cutscene {
     }
   }
 
-  void run(RenderWindow *window, bool levelComplete) {
+  void run(RenderWindow *window, bool levelComplete, bool preDelay) {
     clock.restart();
-    while (clock.getElapsedTime().asSeconds() < 0.5) {
+    if (preDelay) {
+      while (clock.getElapsedTime().asSeconds() < 0.5) {
+      }
     }
-    while (clock.getElapsedTime().asSeconds() < 2) {
+    clock.restart();
+    while (clock.getElapsedTime().asSeconds() < 1.5) {
       if (levelComplete) {
         window->clear(sf::Color::White);
       } else {
