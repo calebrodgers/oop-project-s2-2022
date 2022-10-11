@@ -42,7 +42,7 @@ class Mirror : public GameEntity {
         triangle->setPoint(2, Vector2f(64, 0));
         break;
     }
-    triangle->setFillColor(sf::Color(230, 230, 230));
+    triangle->setFillColor(sf::Color(200, 200, 200));
     triangle->setPosition(initialPosition);
   }
 
