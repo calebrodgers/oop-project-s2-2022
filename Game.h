@@ -2,6 +2,7 @@
 #define GAME_h
 
 #include <SFML/Graphics.hpp>
+#include <string>
 
 #include "BorderWall.h"
 #include "Cutscene.h"
@@ -18,6 +19,7 @@ class Game {
   Scoreboard* scoreboard;
   Cutscene* cutscene;
   bool wasRPressed = false;
+  std::string message;
 
  public:
   Game(int size_x, int size_y, std::string window_name, std::string levelsFile,
@@ -41,8 +43,10 @@ class Game {
         window->clear(sf::Color::White);
         levels[currentLevel]->updateAndDraw(window);
         window->display();
-        cutscene = new Cutscene(currentLevel, levels[currentLevel]->isDone(),
-                                wasRPressed);
+        message = "LEVEL ";
+        message.append(std::to_string(currentLevel + 1));
+        message.append(" COMPLETE");
+        cutscene = new Cutscene(message, levels[currentLevel]->isDone());
         cutscene->run(window, true);
         delete cutscene;
 
@@ -57,8 +61,8 @@ class Game {
         window->clear(sf::Color::White);
         levels[currentLevel]->updateAndDraw(window);
         window->display();
-        cutscene = new Cutscene(currentLevel, levels[currentLevel]->isDone(),
-                                wasRPressed);
+        message = "LEVEL FAILED";
+        cutscene = new Cutscene(message, levels[currentLevel]->isDone());
         cutscene->run(window, levels[currentLevel]->isDone());
         delete cutscene;
 
@@ -72,8 +76,8 @@ class Game {
           window->clear(sf::Color::White);
           levels[currentLevel]->updateAndDraw(window);
           window->display();
-          cutscene = new Cutscene(currentLevel, levels[currentLevel]->isDone(),
-                                  wasRPressed);
+          message = "RESETTING LEVEL";
+          cutscene = new Cutscene(message, levels[currentLevel]->isDone());
           cutscene->run(window, levels[currentLevel]->isDone());
           delete cutscene;
 

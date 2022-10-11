@@ -12,37 +12,20 @@ class Cutscene {
   Text *text = new Text();
 
  public:
-  Cutscene(int level, bool levelComplete, bool wasRPressed) {
+  Cutscene(std::string message, bool levelComplete) {
     font->loadFromFile("assets/fonts/Silkscreen-Regular.ttf");
     text->setFont(*font);
     text->setCharacterSize(64);
+    text->setString(message);
+    sf::FloatRect textShape = text->getLocalBounds();
+    text->setOrigin(textShape.left + textShape.width / 2.0f,
+                    textShape.top + textShape.height / 2.0f);
+    text->setPosition(sf::Vector2f(768 / 2.0f, 768 / 2.0f));
 
     if (levelComplete) {
       text->setFillColor(sf::Color::Black);
-      std::string levelString = "LEVEL ";
-      levelString.append(std::to_string(level + 1));
-      levelString.append(" COMPLETED");
-      text->setString(levelString);
-      sf::FloatRect textShape = text->getLocalBounds();
-      text->setOrigin(textShape.left + textShape.width / 2.0f,
-                      textShape.top + textShape.height / 2.0f);
-      text->setPosition(sf::Vector2f(768 / 2.0f, 768 / 2.0f));
-    } else if (!levelComplete && wasRPressed) {
-      text->setFillColor(sf::Color::White);
-      std::string levelString = "RESETTING LEVEL";
-      text->setString(levelString);
-      sf::FloatRect textShape = text->getLocalBounds();
-      text->setOrigin(textShape.left + textShape.width / 2.0f,
-                      textShape.top + textShape.height / 2.0f);
-      text->setPosition(sf::Vector2f(768 / 2.0f, 768 / 2.0f));
     } else {
       text->setFillColor(sf::Color::White);
-      std::string levelString = "LEVEL FAILED";
-      text->setString(levelString);
-      sf::FloatRect textShape = text->getLocalBounds();
-      text->setOrigin(textShape.left + textShape.width / 2.0f,
-                      textShape.top + textShape.height / 2.0f);
-      text->setPosition(sf::Vector2f(768 / 2.0f, 768 / 2.0f));
     }
   }
 
