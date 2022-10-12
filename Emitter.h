@@ -1,7 +1,7 @@
 #ifndef EMITTER_H
 #define EMITTER_H
 
-#include "BorderEntity.h"
+#include "HittableEntity.h"
 #include "Light.h"
 
 class Emitter : public GameEntity {
