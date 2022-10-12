@@ -60,42 +60,50 @@ class Player : public GameEntity {
   void update(int numOfMirrors, Mirror** mirrors, Wall** walls, int numOfWalls,
               Antitarget** antitargets, int numOfAntitargets) {
     if (!wasWPressed) {
-      if (Keyboard::isKeyPressed(Keyboard::W)) {
+      if (Keyboard::isKeyPressed(Keyboard::W) ||
+          Keyboard::isKeyPressed(Keyboard::Up)) {
         move(Vector2f(0, -64), 768, numOfMirrors, mirrors, walls, numOfWalls,
              antitargets, numOfAntitargets);
         wasWPressed = true;
       }
-    } else if (!Keyboard::isKeyPressed(Keyboard::W)) {
+    } else if (!Keyboard::isKeyPressed(Keyboard::W) &&
+               !Keyboard::isKeyPressed(Keyboard::Up)) {
       wasWPressed = false;
     }
 
     if (!wasAPressed) {
-      if (Keyboard::isKeyPressed(Keyboard::A)) {
+      if (Keyboard::isKeyPressed(Keyboard::A) ||
+          Keyboard::isKeyPressed(Keyboard::Left)) {
         move(Vector2f(-64, 0), 768, numOfMirrors, mirrors, walls, numOfWalls,
              antitargets, numOfAntitargets);
         wasAPressed = true;
       }
-    } else if (!Keyboard::isKeyPressed(Keyboard::A)) {
+    } else if (!Keyboard::isKeyPressed(Keyboard::A) &&
+               !Keyboard::isKeyPressed(Keyboard::Left)) {
       wasAPressed = false;
     }
 
     if (!wasSPressed) {
-      if (Keyboard::isKeyPressed(Keyboard::S)) {
+      if (Keyboard::isKeyPressed(Keyboard::S) ||
+          Keyboard::isKeyPressed(Keyboard::Down)) {
         move(Vector2f(0, 64), 768, numOfMirrors, mirrors, walls, numOfWalls,
              antitargets, numOfAntitargets);
         wasSPressed = true;
       }
-    } else if (!Keyboard::isKeyPressed(Keyboard::S)) {
+    } else if (!Keyboard::isKeyPressed(Keyboard::S) &&
+               !Keyboard::isKeyPressed(Keyboard::Down)) {
       wasSPressed = false;
     }
 
     if (!wasDPressed) {
-      if (Keyboard::isKeyPressed(Keyboard::D)) {
+      if (Keyboard::isKeyPressed(Keyboard::D) ||
+          Keyboard::isKeyPressed(Keyboard::Right)) {
         move(Vector2f(64, 0), 768, numOfMirrors, mirrors, walls, numOfWalls,
              antitargets, numOfAntitargets);
         wasDPressed = true;
       }
-    } else if (!Keyboard::isKeyPressed(Keyboard::D)) {
+    } else if (!Keyboard::isKeyPressed(Keyboard::D) &&
+               !Keyboard::isKeyPressed(Keyboard::Right)) {
       wasDPressed = false;
     }
   }

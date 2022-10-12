@@ -4,25 +4,29 @@
 #include "BorderEntity.h"
 
 class Wall : public BorderEntity {
-    private:
-        int x;
-    public:
-        Wall() {
-            body = new RectangleShape(Vector2f(64, 64));
-            body->setFillColor(sf::Color{125, 21, 19});
-            isHit = false;
-        }
+ private:
+  int x;
 
-        Wall(Vector2f initialPosition): Wall() {
-            body->setPosition(initialPosition);
-        }
+ public:
+  Wall() {
+    body = new RectangleShape(Vector2f(64, 64));
+    body->setFillColor(sf::Color{125, 21, 19});
+    isHit = false;
+  }
 
-        void hit() {
-            isHit = true;
-            body->setFillColor(sf::Color{201, 37, 34});
-        }
+  Wall(Vector2f initialPosition) : Wall() {
+    body->setPosition(initialPosition);
+  }
 
-        
+  void hit() {
+    isHit = true;
+    body->setFillColor(sf::Color{201, 37, 34});
+  }
+
+  void draw(RenderWindow* window) {
+    window->draw(*body);
+    body->setFillColor(sf::Color{125, 21, 19});
+  }
 };
 
 #endif

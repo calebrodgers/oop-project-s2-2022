@@ -46,21 +46,21 @@ class Mirror : public GameEntity {
     triangle->setPosition(initialPosition);
   }
 
-  Vector2f getPos() { return body->getPosition(); }
+  Vector2f getPos() { return triangle->getPosition(); }
 
   bool move(Vector2f amnt, int winSize, int numOfMirrors, Mirror** mirrors,
             int nextSkip, Wall** walls, int numOfWalls) {
     int skipMirror = 0;
     for (int i = 0; i < numOfMirrors; i++) {
-      if (body->getPosition() == mirrors[i]->getPos() && i != nextSkip) {
+      if (triangle->getPosition() == mirrors[i]->getPos() && i != nextSkip) {
         skipMirror = i;
       }
     }
 
     body->move(amnt);
     triangle->move(amnt);
-    float x = body->getPosition().x;
-    float y = body->getPosition().y;
+    float x = triangle->getPosition().x;
+    float y = triangle->getPosition().y;
 
     if (x == 0 || y == 0 || x == winSize - 64 || y == winSize - 64) {
       body->move(Vector2f(-amnt.x, -amnt.y));
@@ -71,7 +71,7 @@ class Mirror : public GameEntity {
     int mirrorCount = 0;
     int checkMirror = 0;
     for (int i = 0; i < numOfMirrors; i++) {
-      if (body->getPosition() == mirrors[i]->getPos() && i != skipMirror) {
+      if (triangle->getPosition() == mirrors[i]->getPos() && i != skipMirror) {
         mirrorCount = 1;
         checkMirror = i;
       }
@@ -87,7 +87,7 @@ class Mirror : public GameEntity {
 
     // detect if mirror is trying to move into a wall block
     for (int i = 0; i < numOfWalls; i++) {
-      if (body->getPosition() == walls[i]->getPos()) {
+      if (triangle->getPosition() == walls[i]->getPos()) {
         body->move(Vector2f(-amnt.x, -amnt.y));
         triangle->move(Vector2f(-amnt.x, -amnt.y));
         return false;
