@@ -3,7 +3,7 @@
 
 #include "GameEntity.h"
 
-class BorderEntity : public GameEntity {
+class HittableEntity : public GameEntity {
  protected:
     bool isHit;
  public:

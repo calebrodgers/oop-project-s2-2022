@@ -4,12 +4,15 @@
 #include "GameEntity.h"
 #include "Wall.h"
 
+// definition of mirrors in game
 class Mirror : public GameEntity {
  private:
+  // have direction and an additional triangle shape
   char direction;
   ConvexShape* triangle;
 
  public:
+  // default constructor initialises square shape  
   Mirror() {
     body = new sf::RectangleShape(Vector2f(64, 64));
     body->setFillColor(sf::Color::Cyan);
@@ -97,6 +100,7 @@ class Mirror : public GameEntity {
     return true;
   }
 
+  // requires unique draw function as the mirror is composed of two different shapes
   void draw(RenderWindow* window) {
     window->draw(*body);
     window->draw(*triangle);
