@@ -7,6 +7,7 @@
 #include "GameEntity.h"
 #include "Level.h"
 
+// this is the class for the game
 class Game {
  private:
   sf::RenderWindow* window;
@@ -16,6 +17,7 @@ class Game {
   bool wasRPressed = false;
 
  public:
+ // constructor initializes the window, correctly sets the currently level ad initializes it
   Game(int size_x, int size_y, std::string window_name, std::string levelsFile,
        int startLevel, int numOfLevels) {
     window = new sf::RenderWindow(VideoMode(size_x, size_y), window_name);
@@ -28,10 +30,11 @@ class Game {
   void run() {
     while (window->isOpen()) {
       sf::Event event;
+      // close the window when the window closing button is clicked
       while (window->pollEvent(event)) {
         if (event.type == sf::Event::Closed) window->close();
       }
-
+      // progress to the next level when the current level is completed 
       if (levels[currentLevel]->isDone()) {
         if (currentLevel != numOfLevels - 1) {
           levels[currentLevel + 1] =
@@ -39,7 +42,7 @@ class Game {
           currentLevel++;
         }
       }
-
+      // reset the level when key 'R' pressed
       if (!wasRPressed) {
         if (Keyboard::isKeyPressed(Keyboard::R)) {
           wasRPressed = true;
