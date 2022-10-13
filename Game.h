@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <fstream>
+#include <iostream>
 #include <string>
 
 #include "BorderWall.h"
@@ -27,7 +28,10 @@ class Game {
        std::string saveFile, int numOfLevels) {
     window = new sf::RenderWindow(VideoMode(size_x, size_y), window_name);
     std::ifstream file(saveFile);
-    this->currentLevel = 0;
+    char levelChar;
+    file.get(levelChar);
+    this->currentLevel = levelChar - '0';
+    file.close();
     this->numOfLevels = numOfLevels;
     levels = new Level*[numOfLevels];
     levels[currentLevel] = new Level(levelsFile, currentLevel);
