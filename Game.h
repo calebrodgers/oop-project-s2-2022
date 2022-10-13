@@ -3,7 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <fstream>
-#include <iostream>
 #include <string>
 
 #include "BorderWall.h"
@@ -22,19 +21,22 @@ class Game {
   Cutscene* cutscene;
   bool wasRPressed = false;
   std::string message;
+  std::fstream saveFile;
+  std::string saveFilePath;
 
  public:
-  Game(int size_x, int size_y, std::string window_name, std::string levelsFile,
-       std::string saveFile, int numOfLevels) {
+  Game(int size_x, int size_y, std::string window_name,
+       std::string levelsFilePath, std::string saveFilePath, int numOfLevels) {
     window = new sf::RenderWindow(VideoMode(size_x, size_y), window_name);
-    std::ifstream file(saveFile);
+    this->saveFilePath = saveFilePath;
+    saveFile.open(saveFilePath);
     char levelChar;
-    file.get(levelChar);
+    saveFile.get(levelChar);
+    saveFile.close();
     this->currentLevel = levelChar - '0';
-    file.close();
     this->numOfLevels = numOfLevels;
     levels = new Level*[numOfLevels];
-    levels[currentLevel] = new Level(levelsFile, currentLevel);
+    levels[currentLevel] = new Level(levelsFilePath, currentLevel);
     scoreboard = new Scoreboard(Vector2f(10, 2));
   }
 
@@ -61,10 +63,16 @@ class Game {
           levels[currentLevel + 1] =
               new Level("levels.nrlvl", currentLevel + 1);
           currentLevel++;
+          saveFile.open(saveFilePath);
+          saveFile.put(currentLevel + 48);
+          saveFile.close();
         } else {
           message = "GAME COMPLETE!";
           cutscene = new Cutscene(message, levels[currentLevel]->isDone());
           cutscene->run(window, levels[currentLevel]->isDone(), true);
+          saveFile.open(saveFilePath);
+          saveFile.put(48);
+          saveFile.close();
           return;
         }
       }
