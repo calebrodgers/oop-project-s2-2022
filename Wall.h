@@ -3,11 +3,11 @@
 
 #include "HittableEntity.h"
 
+// this is the class for wall squares in the game
 class Wall : public HittableEntity {
- private:
-  int x;
 
  public:
+ // the constructor creates the square shape and sets the color
   Wall() {
     body = new RectangleShape(Vector2f(64, 64));
     body->setFillColor(sf::Color{125, 21, 19});
