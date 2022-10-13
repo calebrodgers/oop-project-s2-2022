@@ -15,8 +15,8 @@ class Light : public GameEntity {
 
  public:
   Light(Vector2f previousPos, Vector2f previousVelocity, Mirror** mirrors,
-        Player* player, int winSize, int numOfMirrors, Wall** walls,
-        int numOfWalls, Target* target, Antitarget** antitargets,
+        GameEntity* player, int winSize, int numOfMirrors, Wall** walls,
+        int numOfWalls, BorderEntity* target, Antitarget** antitargets,
         int numOfAntiTargets) {
     body = new sf::RectangleShape(Vector2f(64, 64));
     velocity = previousVelocity;
