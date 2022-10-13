@@ -18,6 +18,7 @@ class Wall : public HittableEntity {
     body->setPosition(initialPosition);
   }
 
+  // when the wall is hit, the hit bool becomes true and colour changes
   void hit() {
     isHit = true;
     body->setFillColor(sf::Color{201, 37, 34});

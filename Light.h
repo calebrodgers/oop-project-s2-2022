@@ -8,18 +8,23 @@
 #include "Wall.h"
 #include "Target.h"
 
+// this is the class for the light particles in the game
 class Light : public GameEntity {
  private:
   Vector2f velocity;
 
  public:
+  // when a new light particle is created determine velocity of next particle based on location
   Light(Vector2f previousPos, Vector2f previousVelocity, Mirror** mirrors,
         Player* player, int winSize, int numOfMirrors, Wall** walls, int numOfWalls, Target* target) {
     body = new sf::RectangleShape(Vector2f(64, 64));
     velocity = previousVelocity;
+
+    // set position of light based on previous and velocitys
     body->setPosition(previousPos + velocity);
     body->setFillColor(sf::Color::Cyan);
 
+    // stop if hits border or player
     if (body->getPosition().x == 0 || body->getPosition().y == 0 ||
         body->getPosition().x == winSize || body->getPosition().y == winSize) {
       velocity = Vector2f(0, 0);
@@ -27,10 +32,13 @@ class Light : public GameEntity {
                body->getPosition().y == player->getPos().y) {
       velocity = Vector2f(0, 0);
     }
+
+    // reflect light if it hits a mirror
     for (int i = 0; i < numOfMirrors; i++) {
       if (body->getPosition().x == mirrors[i]->getPos().x &&
           body->getPosition().y == mirrors[i]->getPos().y) {
         switch (mirrors[i]->getDirection()) {
+          // determine direction of light based on mirror direction
           case 'N':
             if (velocity.y == 64) {
               velocity = Vector2f(64, 0);
@@ -71,6 +79,7 @@ class Light : public GameEntity {
       }
     }
 
+    // stop light if hits wall
     for (int i = 0; i < numOfWalls; i++) {
       if (body->getPosition().x == walls[i]->getPos().x &&
           body->getPosition().y == walls[i]->getPos().y) {
@@ -79,6 +88,7 @@ class Light : public GameEntity {
           }
     }
 
+    // stop if hits target
     if (body->getPosition().x == target->getPos().x &&
           body->getPosition().y == target->getPos().y) {
             velocity = Vector2f(0, 0);

@@ -13,12 +13,18 @@
 #include "Target.h"
 #include "Wall.h"
 
+// this is the class for the game's levels
 class Level {
  private:
+  // number of game entities there are multiple of
   int numOfMirrors;
   int numOfWalls;
   int countLight;
+
+  // determines when the game is done
   bool done;
+
+  // pointers to all the entities in the level
   Mirror** mirrors;
   Player* player;
   BorderWall* border;
@@ -28,6 +34,7 @@ class Level {
   Wall** walls;
 
  public:
+  // Constructor creates the level based on characters in the levels.nrlvl file
   Level(std::string fileName, int levelIdx) {
     // Read in lines
     std::ifstream file(fileName);
@@ -58,7 +65,7 @@ class Level {
       }
     }
 
-    // Create game objects
+    // Create game objects based on character in levels.nrlvl file
     int mirrorIdx = 0;
     mirrors = new Mirror*[numOfMirrors];
 
@@ -67,22 +74,31 @@ class Level {
 
     for (int i = levelIdx * 12; i < levelIdx * 12 + 12; i++) {
       for (int j = 0; j < 12; j++) {
+        // add mirrors
         if (lines[i][j] == 'N' || lines[i][j] == 'E' || lines[i][j] == 'S' ||
             lines[i][j] == 'W') {
           mirrors[mirrorIdx] = new Mirror(
               Vector2f(64 * j, 64 * (i - (levelIdx * 12))), lines[i][j]);
           mirrorIdx++;
         }
+
+        // add player
         if (lines[i][j] == 'p') {
           player = new Player(Vector2f(64 * j, 64 * (i - (levelIdx * 12))));
         }
+
+        // add target
         if (lines[i][j] == 'g') {
           target = new Target(Vector2f(64 * j, 64 * (i - (levelIdx * 12))));
         }
+
+        // add light emitter
         if (lines[i][j] == 'e') {
           emitter =
               new Emitter(Vector2f(64 * j, 64 * (i - (levelIdx * 12))), 768);
         }
+
+        // add walls
         if (lines[i][j] == 'w') {
           walls[wallIdx] = new Wall(Vector2f(64 * j, 64 * (i - (levelIdx * 12))));
           wallIdx++;
@@ -90,15 +106,21 @@ class Level {
         }
       }
     }
+
+    // create borderwall and light
     border = new BorderWall(768);
     light = new Light*[100];
   }
 
+
+  // update elements in the level and draw entities
   void updateAndDraw(RenderWindow* window) {
     int lightMoving = true;
     countLight = 0;
     delete[] light;
     light = new Light*[100];
+
+    // creating light particles
     while (lightMoving == true) {
       if (countLight == 0) {
         light[countLight] =
@@ -119,25 +141,29 @@ class Level {
         countLight++;
       }
     }
+
+    // draw light
     for (int i = 0; i < countLight; i++) {
       light[i]->draw(window);
     }
     countLight = 0;
 
+    // update player
     player->update(numOfMirrors, mirrors, walls, numOfWalls);
+
+    // draw game entities
     for (int i = 0; i < numOfMirrors; i++) {
       mirrors[i]->draw(window);
     }
-
     for (int i = 0; i < 1; i++) {
       walls[i]->draw(window);
     }
-
     player->draw(window);
     border->draw(window);
     target->draw(window);
     emitter->draw(window);
 
+    // finish the level if the target has been hit
     if (target->getHit()) {
       done = true;
     }
