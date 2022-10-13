@@ -119,6 +119,10 @@ class Level {
   }
 
   void updateAndDraw(RenderWindow* window) {
+    for (int i = 0; i < numOfMirrors; i++) {
+      mirrors[i]->drawBase(window);
+    }
+
     int lightMoving = true;
 
     for (int i = 0; i < light.size(); i++) {

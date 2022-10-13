@@ -12,7 +12,7 @@ class Mirror : public GameEntity {
  public:
   Mirror() {
     body = new sf::RectangleShape(Vector2f(64, 64));
-    body->setFillColor(sf::Color::Cyan);
+    body->setFillColor(sf::Color(210, 180, 140));
   }
   Mirror(Vector2f initialPosition, char _direction) : Mirror() {
     body->setPosition(initialPosition);
@@ -97,10 +97,9 @@ class Mirror : public GameEntity {
     return true;
   }
 
-  void draw(RenderWindow* window) {
-    window->draw(*body);
-    window->draw(*triangle);
-  }
+  void draw(RenderWindow* window) { window->draw(*triangle); }
+
+  void drawBase(RenderWindow* window) { window->draw(*body); }
 
   char getDirection() { return direction; };
 };
