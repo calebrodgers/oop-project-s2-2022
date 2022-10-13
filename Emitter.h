@@ -7,13 +7,11 @@
 class Emitter : public GameEntity {
  private:
   Vector2f lightInitialVelocity;
-  int countLight;
 
  public:
   Emitter() {
     body = new sf::RectangleShape(Vector2f(64, 64));
     body->setFillColor(sf::Color::Red);
-    countLight = 0;
   }
 
   Emitter(Vector2f position, int winSize) : Emitter() {

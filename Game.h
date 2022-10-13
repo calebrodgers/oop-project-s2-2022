@@ -2,6 +2,7 @@
 #define GAME_h
 
 #include <SFML/Graphics.hpp>
+#include <fstream>
 #include <string>
 
 #include "BorderWall.h"
@@ -23,9 +24,10 @@ class Game {
 
  public:
   Game(int size_x, int size_y, std::string window_name, std::string levelsFile,
-       int startLevel, int numOfLevels) {
+       std::string saveFile, int numOfLevels) {
     window = new sf::RenderWindow(VideoMode(size_x, size_y), window_name);
-    this->currentLevel = startLevel;
+    std::ifstream file(saveFile);
+    this->currentLevel = 0;
     this->numOfLevels = numOfLevels;
     levels = new Level*[numOfLevels];
     levels[currentLevel] = new Level(levelsFile, currentLevel);
@@ -44,17 +46,22 @@ class Game {
         levels[currentLevel]->updateAndDraw(window);
         scoreboard->updateAndDraw(currentLevel + 1, window);
         window->display();
-        message = "LEVEL ";
-        message.append(std::to_string(currentLevel + 1));
-        message.append(" COMPLETE");
-        cutscene = new Cutscene(message, levels[currentLevel]->isDone());
-        cutscene->run(window, levels[currentLevel]->isDone(), true);
-        delete cutscene;
 
         if (currentLevel != numOfLevels - 1) {
+          message = "LEVEL ";
+          message.append(std::to_string(currentLevel + 1));
+          message.append(" COMPLETE");
+          cutscene = new Cutscene(message, levels[currentLevel]->isDone());
+          cutscene->run(window, levels[currentLevel]->isDone(), true);
+          delete cutscene;
           levels[currentLevel + 1] =
               new Level("levels.nrlvl", currentLevel + 1);
           currentLevel++;
+        } else {
+          message = "GAME COMPLETE!";
+          cutscene = new Cutscene(message, levels[currentLevel]->isDone());
+          cutscene->run(window, levels[currentLevel]->isDone(), true);
+          return;
         }
       }
 
