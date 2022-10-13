@@ -13,12 +13,19 @@ class Player : public GameEntity {
   bool wasAPressed = false;
   bool wasSPressed = false;
   bool wasDPressed = false;
+  sf::SoundBuffer* stepSoundBuffer;
+  sf::Sound* stepSound;
 
  public:
   Player() {
     body = new sf::CircleShape(32.f);
     body->setPosition(Vector2f(64, 64));
     body->setFillColor(sf::Color::Blue);
+    stepSoundBuffer = new sf::SoundBuffer();
+    stepSoundBuffer->loadFromFile("assets/sounds/step.wav");
+    stepSound = new sf::Sound();
+    stepSound->setBuffer(*stepSoundBuffer);
+    stepSound->setVolume(75);
   }
 
   Player(Vector2f spawnPoint) : Player() { body->setPosition(spawnPoint); }
@@ -55,6 +62,8 @@ class Player : public GameEntity {
         body->move(Vector2f(-amnt.x, -amnt.y));
       }
     }
+
+    stepSound->play();
   }
 
   void update(int numOfMirrors, Mirror** mirrors, Wall** walls, int numOfWalls,
