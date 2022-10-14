@@ -74,7 +74,7 @@ class TutorialText {
       if (loopCount == 0) {
         waitAndPrint(window, 0, "You can push multiple", Vector2f(70, 344));
 
-        waitAndPrint(window, 5, "mirrors at the same time", Vector2f(70, 414));
+        waitAndPrint(window, 4, "mirrors at the same time", Vector2f(70, 414));
       }
     }
 
@@ -106,6 +106,14 @@ class TutorialText {
                      Vector2f(70, 474));
 
         waitAndPrint(window, 6, "hit the purple block", Vector2f(70, 544));
+      }
+    }
+
+    if (levelNum == 4) {
+      if (loopCount == 0) {
+        waitAndPrint(window, 0, "Your turn,", Vector2f(70, 274));
+
+        waitAndPrint(window, 3, "have fun!", Vector2f(70, 344));
       }
     }
   }

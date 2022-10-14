@@ -125,7 +125,7 @@ class Game {
       // Display Window
       window->display();
 
-      if (currentLevel < 4 && loopCount < 6) {
+      if (currentLevel < 5 && loopCount < 6) {
         tutorialText = new TutorialText(window, currentLevel, loopCount);
         loopCount++;
       }
