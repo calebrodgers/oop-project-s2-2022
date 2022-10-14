@@ -10,15 +10,18 @@
 #include "GameEntity.h"
 #include "Level.h"
 #include "Scoreboard.h"
+#include "TutorialText.h"
 
 class Game {
  private:
   sf::RenderWindow* window;
   int currentLevel;
   int numOfLevels;
+  int loopCount;
   Level** levels;
   Scoreboard* scoreboard;
   Cutscene* cutscene;
+  TutorialText* tutorialText;
   bool wasRPressed = false;
   std::string message;
   std::fstream saveFile;
@@ -38,6 +41,7 @@ class Game {
     levels = new Level*[numOfLevels];
     levels[currentLevel] = new Level(levelsFilePath, currentLevel);
     scoreboard = new Scoreboard(Vector2f(10, 2));
+    loopCount = 0;
   }
 
   void run() {
@@ -52,6 +56,7 @@ class Game {
         levels[currentLevel]->updateAndDraw(window);
         scoreboard->updateAndDraw(currentLevel + 1, window);
         window->display();
+        loopCount = 0;
 
         if (currentLevel != numOfLevels - 1) {
           message = "LEVEL ";
@@ -86,6 +91,7 @@ class Game {
         cutscene = new Cutscene(message, levels[currentLevel]->isDone());
         cutscene->run(window, levels[currentLevel]->isDone(), true);
         delete cutscene;
+        loopCount = 0;
 
         levels[currentLevel] = new Level("levels.nrlvl", currentLevel);
       }
@@ -102,6 +108,7 @@ class Game {
           cutscene = new Cutscene(message, levels[currentLevel]->isDone());
           cutscene->run(window, levels[currentLevel]->isDone(), false);
           delete cutscene;
+          loopCount = 0;
 
           levels[currentLevel] = new Level("levels.nrlvl", currentLevel);
         }
@@ -117,6 +124,11 @@ class Game {
 
       // Display Window
       window->display();
+
+      if (currentLevel < 4 && loopCount < 6) {
+        tutorialText = new TutorialText(window, currentLevel, loopCount);
+        loopCount++;
+      }
     }
   }
 };

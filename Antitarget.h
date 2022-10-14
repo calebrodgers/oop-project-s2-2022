@@ -7,7 +7,7 @@ class Antitarget : public BorderEntity {
  public:
   Antitarget() {
     body = new sf::RectangleShape(Vector2f(64, 64));
-    body->setFillColor(sf::Color(255, 0, 255));
+    body->setFillColor(sf::Color(180, 0, 255));
     isHit = false;
   }
 
