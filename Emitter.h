@@ -19,7 +19,8 @@ class Emitter : public GameEntity {
   // this constructor sets the position and determines initial light direction
   Emitter(Vector2f position, int winSize) : Emitter() {
     body->setPosition(position);
-    // the initial velocity of the light is determined by which edge the emitter is located on
+    // the initial velocity of the light is determined by which edge the emitter
+    // is located on
     if (position.y == 0) {
       lightInitialVelocity = Vector2f(0, 64);
     } else if (position.y == winSize) {
@@ -30,7 +31,7 @@ class Emitter : public GameEntity {
       lightInitialVelocity = Vector2f(-64, 0);
     }
   }
-  
+
   Vector2f getInitialVelocity() { return lightInitialVelocity; }
 };
 

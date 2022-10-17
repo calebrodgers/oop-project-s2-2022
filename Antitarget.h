@@ -15,7 +15,7 @@ class Antitarget : public HittableEntity {
 
   Antitarget(Vector2f position) : Antitarget() { body->setPosition(position); }
 
-  // when the antitarget it hit it turns black
+  // when the antitarget is hit it turns black
   void hit() {
     isHit = true;
     body->setFillColor(sf::Color::Black);

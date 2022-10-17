@@ -12,7 +12,7 @@ class Target : public HittableEntity {
     body->setFillColor(sf::Color::Yellow);
     isHit = false;
   }
-  
+
   Target(Vector2f position) : Target() { body->setPosition(position); }
 
   // when hit by light, change hit variable and turn green

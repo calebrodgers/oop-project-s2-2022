@@ -18,7 +18,8 @@ class Mirror : public GameEntity {
     body->setFillColor(sf::Color(210, 180, 140));
   }
 
-  // this constructor sets position of mirror, as well as creates triangle edge based on reflecting direction
+  // this constructor sets position of mirror, as well as creates triangle edge
+  // based on reflecting direction
   Mirror(Vector2f initialPosition, char _direction) : Mirror() {
     // set position
     body->setPosition(initialPosition);
@@ -113,7 +114,8 @@ class Mirror : public GameEntity {
     return true;
   }
 
-  // requires two draw functions for triangle and base, as the light needs to be drawn under the triangle but above the base
+  // requires two draw functions for triangle and base, as the light needs to be
+  // drawn under the triangle but above the base
   void draw(RenderWindow* window) { window->draw(*triangle); }
 
   void drawBase(RenderWindow* window) { window->draw(*body); }

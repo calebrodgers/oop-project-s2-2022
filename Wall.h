@@ -9,7 +9,7 @@ class Wall : public HittableEntity {
   int x;
 
  public:
- // the constructor creates the square shape and sets the color
+  // the constructor creates the square shape and sets the color
   Wall() {
     body = new RectangleShape(Vector2f(64, 64));
     body->setFillColor(sf::Color{125, 21, 19});
@@ -26,7 +26,8 @@ class Wall : public HittableEntity {
     body->setFillColor(sf::Color{201, 37, 34});
   }
 
-  // unique draw function that changes colour to default wall colour, which is changed if hit
+  // unique draw function that changes colour to default wall colour, which is
+  // changed if hit
   void draw(RenderWindow* window) {
     window->draw(*body);
     body->setFillColor(sf::Color{125, 21, 19});

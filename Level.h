@@ -234,7 +234,7 @@ class Level {
     for (int i = 0; i < light.size(); i++) {
       delete light[i];
     }
-    
+
     for (int i = 0; i < numOfMirrors; i++) {
       delete mirrors[i];
     }

@@ -12,7 +12,8 @@ class BorderWall {
 
  public:
   BorderWall(int winSize) {
-    // when the borderwall is initialized, 4 rectangles are created, one for each edge of the screen
+    // when the borderwall is initialized, 4 rectangles are created, one for
+    // each edge of the screen
     body = new Shape*[4];
     body[0] = new RectangleShape(Vector2f(winSize, 64));
 
@@ -29,7 +30,8 @@ class BorderWall {
     }
   }
 
-  // the borderwall requires a unique draw function as it is composed of 4 shapes
+  // the borderwall requires a unique draw function as it is composed of 4
+  // shapes
   void draw(RenderWindow* window) {
     for (int i = 0; i < 4; i++) {
       window->draw(*body[i]);

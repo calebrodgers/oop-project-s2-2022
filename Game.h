@@ -29,7 +29,8 @@ class Game {
   std::string saveFilePath;
 
  public:
-  // constructor initializes the window, correctly sets the current level and initializes it
+  // constructor initializes the window, correctly sets the current level and
+  // initializes it
   Game(int size_x, int size_y, std::string window_name,
        std::string levelsFilePath, std::string saveFilePath, int numOfLevels) {
     window = new sf::RenderWindow(VideoMode(size_x, size_y), window_name);
@@ -59,7 +60,7 @@ class Game {
         if (event.type == sf::Event::Closed) window->close();
       }
 
-      // progress to the next level when the current level is completed 
+      // progress to the next level when the current level is completed
       if (levels[currentLevel]->isDone()) {
         window->clear(sf::Color::White);
         levels[currentLevel]->updateAndDraw(window);
@@ -67,7 +68,8 @@ class Game {
         window->display();
         loopCount = 0;
 
-        // display the appropriate message/cutscene at the start of the next level
+        // display the appropriate message/cutscene at the start of the next
+        // level
         if (currentLevel != numOfLevels - 1) {
           message = "LEVEL ";
           message.append(std::to_string(currentLevel + 1));

@@ -29,16 +29,17 @@ class Light : public GameEntity {
     if (body->getPosition().x == 0 || body->getPosition().y == 0 ||
         body->getPosition().x == winSize || body->getPosition().y == winSize) {
       velocity = Vector2f(0, 0);
-    } 
-    
-    // determine velocity of next particle based on whether specific entities have been hit
+    }
+
+    // determine velocity of next particle based on whether specific entities
+    // have been hit
 
     // stop light if player hit
     else if (body->getPosition().x == player->getPos().x &&
-               body->getPosition().y == player->getPos().y) {
+             body->getPosition().y == player->getPos().y) {
       velocity = Vector2f(0, 0);
     }
-    
+
     // reflect light if mirror hit
     for (int i = 0; i < numOfMirrors; i++) {
       if (body->getPosition().x == mirrors[i]->getPos().x &&
@@ -109,7 +110,7 @@ class Light : public GameEntity {
       target->hit();
     }
   }
-  
+
   Vector2f getVelocity() { return velocity; }
 };
 
