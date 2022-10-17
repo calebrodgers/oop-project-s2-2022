@@ -1,9 +1,9 @@
 #ifndef WALL_H
 #define WALL_H
 
-#include "BorderEntity.h"
+#include "HittableEntity.h"
 
-class Wall : public BorderEntity {
+class Wall : public HittableEntity {
  private:
   int x;
 

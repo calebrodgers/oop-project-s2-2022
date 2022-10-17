@@ -9,14 +9,16 @@
 #include "Target.h"
 #include "Wall.h"
 
+// this is the class for the light particles in the game
 class Light : public GameEntity {
  private:
   Vector2f velocity;
 
  public:
+  // constructor sets position and determines velocity for next particle
   Light(Vector2f previousPos, Vector2f previousVelocity, Mirror** mirrors,
         GameEntity* player, int winSize, int numOfMirrors, Wall** walls,
-        int numOfWalls, BorderEntity* target, Antitarget** antitargets,
+        int numOfWalls, HittableEntity* target, Antitarget** antitargets,
         int numOfAntiTargets) {
     body = new sf::RectangleShape(Vector2f(64, 64));
     velocity = previousVelocity;

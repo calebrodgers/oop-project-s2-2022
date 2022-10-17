@@ -1,9 +1,9 @@
 #ifndef TARGET_H
 #define TARGET_H
 
-#include "BorderEntity.h"
+#include "HittableEntity.h"
 
-class Target : public BorderEntity {
+class Target : public HittableEntity {
  public:
   Target() {
     body = new sf::RectangleShape(Vector2f(64, 64));
