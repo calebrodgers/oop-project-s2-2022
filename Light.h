@@ -25,13 +25,21 @@ class Light : public GameEntity {
     body->setPosition(previousPos + velocity);
     body->setFillColor(sf::Color::Cyan);
 
+    // stop light if hits border
     if (body->getPosition().x == 0 || body->getPosition().y == 0 ||
         body->getPosition().x == winSize || body->getPosition().y == winSize) {
       velocity = Vector2f(0, 0);
-    } else if (body->getPosition().x == player->getPos().x &&
+    } 
+    
+    // determine velocity of next particle based on whether specific entities have been hit
+
+    // stop light if player hit
+    else if (body->getPosition().x == player->getPos().x &&
                body->getPosition().y == player->getPos().y) {
       velocity = Vector2f(0, 0);
     }
+    
+    // reflect light if mirror hit
     for (int i = 0; i < numOfMirrors; i++) {
       if (body->getPosition().x == mirrors[i]->getPos().x &&
           body->getPosition().y == mirrors[i]->getPos().y) {
@@ -76,6 +84,7 @@ class Light : public GameEntity {
       }
     }
 
+    // stop light if wall hit
     for (int i = 0; i < numOfWalls; i++) {
       if (body->getPosition().x == walls[i]->getPos().x &&
           body->getPosition().y == walls[i]->getPos().y) {
@@ -84,6 +93,7 @@ class Light : public GameEntity {
       }
     }
 
+    // stop light if antitarget hit
     for (int i = 0; i < numOfAntiTargets; i++) {
       if (body->getPosition().x == antitargets[i]->getPos().x &&
           body->getPosition().y == antitargets[i]->getPos().y) {
@@ -92,14 +102,14 @@ class Light : public GameEntity {
       }
     }
 
+    // stop light if target hit
     if (body->getPosition().x == target->getPos().x &&
         body->getPosition().y == target->getPos().y) {
       velocity = Vector2f(0, 0);
       target->hit();
     }
   }
-
-  Vector2f getPos() { return body->getPosition(); }
+  
   Vector2f getVelocity() { return velocity; }
 };
 

@@ -3,6 +3,7 @@
 
 using namespace sf;
 
+// this is the class for tutorial text in the game
 class TutorialText {
  private:
   sf::Clock clock;
@@ -10,12 +11,14 @@ class TutorialText {
   Text *text = new Text();
 
  public:
+  // constructor sets text propeties and displays tutorial text
   TutorialText(RenderWindow *window, int levelNum, int loopCount) {
     font->loadFromFile("assets/fonts/Silkscreen-Regular.ttf");
     text->setFont(*font);
     text->setCharacterSize(32);
     text->setFillColor(Color::Black);
 
+    // level 1 text
     if (levelNum == 0) {
       if (loopCount == 0) {
         text->setCharacterSize(64);
@@ -78,6 +81,7 @@ class TutorialText {
       }
     }
 
+    // level 2 text
     if (levelNum == 2) {
       if (loopCount == 0) {
         waitAndPrint(window, 0, "Sometimes, you will have to",
@@ -89,6 +93,7 @@ class TutorialText {
       }
     }
 
+    // level 3 text
     if (levelNum == 3) {
       if (loopCount == 0) {
         waitAndPrint(window, 0, "Watch out! If you reflect", Vector2f(70, 404));
@@ -109,6 +114,7 @@ class TutorialText {
       }
     }
 
+    // level 4 text
     if (levelNum == 4) {
       if (loopCount == 0) {
         waitAndPrint(window, 0, "Your turn,", Vector2f(70, 274));
@@ -118,11 +124,13 @@ class TutorialText {
     }
   }
 
+  // this function displays text for a specified uptime
   void waitAndPrint(RenderWindow *window, int upTime, std::string message,
                     Vector2f pos) {
     text->setString(message);
     text->setPosition(pos);
 
+    // give specific colour to mirror and light text
     if (message == "Mirror") {
       text->setFillColor(Color(210, 180, 140));
     }
@@ -131,10 +139,12 @@ class TutorialText {
       text->setFillColor(Color::Cyan);
     }
 
+    // only draw once if 0 uptime
     if (upTime == 0) {
       window->draw(*text);
     }
 
+    // display text for uptime
     clock.restart();
     while (clock.getElapsedTime().asSeconds() < upTime) {
       window->draw(*text);
