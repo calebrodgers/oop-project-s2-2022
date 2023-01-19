@@ -14,19 +14,26 @@ class Player : public GameEntity {
   bool wasAPressed = false;
   bool wasSPressed = false;
   bool wasDPressed = false;
+  bool moved = false;
+  int step_count = 0;
+  Texture texture;
 
  public:
   // constructor creates the circle body for player and sets colour
   Player() {
-    body = new sf::CircleShape(32.f);
+    body = new sf::RectangleShape(Vector2f(64, 96));
+    body->setOrigin(0, 32);
     body->setPosition(Vector2f(64, 64));
-    body->setFillColor(sf::Color::Blue);
+
+    texture.loadFromFile("scientist_sprite.png");
+    body->setTexture(&texture);
+    body->setTextureRect(IntRect(0, 0, 64, 96));
   }
 
   Player(Vector2f spawnPoint) : Player() { body->setPosition(spawnPoint); }
 
   // moving the player
-  void move(Vector2f amnt, int winSize, int numOfMirrors, Mirror** mirrors,
+  bool move(Vector2f amnt, int winSize, int numOfMirrors, Mirror** mirrors,
             Wall** walls, int numOfWalls, Antitarget** antitargets,
             int numOfAntitargets) {
     Vector2f initialPos = body->getPosition();
@@ -37,6 +44,7 @@ class Player : public GameEntity {
     // dont let the player move into the border
     if (x == 0 || y == 0 || x == winSize - 64 || y == winSize - 64) {
       body->move(Vector2f(-amnt.x, -amnt.y));
+      return false;
     }
 
     // attempt to push mirror, but if it fails dont let player move
@@ -45,6 +53,7 @@ class Player : public GameEntity {
         if (mirrors[i]->move(amnt, winSize, numOfMirrors, mirrors, -1, walls,
                              numOfWalls) == false) {
           body->move(Vector2f(-amnt.x, -amnt.y));
+          return false;
         }
       }
     }
@@ -53,6 +62,7 @@ class Player : public GameEntity {
     for (int i = 0; i < numOfWalls; i++) {
       if (x == walls[i]->getPos().x && y == walls[i]->getPos().y) {
         body->move(Vector2f(-amnt.x, -amnt.y));
+        return false;
       }
     }
 
@@ -61,8 +71,10 @@ class Player : public GameEntity {
       if (x == antitargets[i]->getPos().x && y == antitargets[i]->getPos().y &&
           body->getPosition() != initialPos) {
         body->move(Vector2f(-amnt.x, -amnt.y));
+        return false;
       }
     }
+    return true;
   }
 
   // update player movement based on pressed keys
@@ -72,9 +84,10 @@ class Player : public GameEntity {
     if (!wasWPressed) {
       if (Keyboard::isKeyPressed(Keyboard::W) ||
           Keyboard::isKeyPressed(Keyboard::Up)) {
-        move(Vector2f(0, -64), 768, numOfMirrors, mirrors, walls, numOfWalls,
-             antitargets, numOfAntitargets);
+        bool moved = move(Vector2f(0, -64), 768, numOfMirrors, mirrors, walls,
+                          numOfWalls, antitargets, numOfAntitargets);
         wasWPressed = true;
+        body->setTextureRect(IntRect(0, 288, 64, 96));
       }
     } else if (!Keyboard::isKeyPressed(Keyboard::W) &&
                !Keyboard::isKeyPressed(Keyboard::Up)) {
@@ -85,9 +98,10 @@ class Player : public GameEntity {
     if (!wasAPressed) {
       if (Keyboard::isKeyPressed(Keyboard::A) ||
           Keyboard::isKeyPressed(Keyboard::Left)) {
-        move(Vector2f(-64, 0), 768, numOfMirrors, mirrors, walls, numOfWalls,
-             antitargets, numOfAntitargets);
+        bool moved = move(Vector2f(-64, 0), 768, numOfMirrors, mirrors, walls,
+                          numOfWalls, antitargets, numOfAntitargets);
         wasAPressed = true;
+        body->setTextureRect(IntRect(0, 96, 64, 96));
       }
     } else if (!Keyboard::isKeyPressed(Keyboard::A) &&
                !Keyboard::isKeyPressed(Keyboard::Left)) {
@@ -98,9 +112,10 @@ class Player : public GameEntity {
     if (!wasSPressed) {
       if (Keyboard::isKeyPressed(Keyboard::S) ||
           Keyboard::isKeyPressed(Keyboard::Down)) {
-        move(Vector2f(0, 64), 768, numOfMirrors, mirrors, walls, numOfWalls,
-             antitargets, numOfAntitargets);
+        bool moved = move(Vector2f(0, 64), 768, numOfMirrors, mirrors, walls,
+                          numOfWalls, antitargets, numOfAntitargets);
         wasSPressed = true;
+        body->setTextureRect(IntRect(0, 0, 64, 96));
       }
     } else if (!Keyboard::isKeyPressed(Keyboard::S) &&
                !Keyboard::isKeyPressed(Keyboard::Down)) {
@@ -111,9 +126,10 @@ class Player : public GameEntity {
     if (!wasDPressed) {
       if (Keyboard::isKeyPressed(Keyboard::D) ||
           Keyboard::isKeyPressed(Keyboard::Right)) {
-        move(Vector2f(64, 0), 768, numOfMirrors, mirrors, walls, numOfWalls,
-             antitargets, numOfAntitargets);
+        bool moved = move(Vector2f(64, 0), 768, numOfMirrors, mirrors, walls,
+                          numOfWalls, antitargets, numOfAntitargets);
         wasDPressed = true;
+        body->setTextureRect(IntRect(0, 192, 64, 96));
       }
     } else if (!Keyboard::isKeyPressed(Keyboard::D) &&
                !Keyboard::isKeyPressed(Keyboard::Right)) {
