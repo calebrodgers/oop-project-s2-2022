@@ -1,5 +1,5 @@
 #ifndef GAME_H
-#define GAME_h
+#define GAME_H
 
 #include <SFML/Graphics.hpp>
 #include <fstream>
@@ -9,7 +9,7 @@
 #include "Cutscene.h"
 #include "GameEntity.h"
 #include "Level.h"
-#include "Scoreboard.h"
+// #include "Scoreboard.h"
 #include "TutorialText.h"
 
 // this is the class for the game
@@ -63,7 +63,8 @@ class Game {
       // progress to the next level when the current level is completed
       if (levels[currentLevel]->isDone()) {
         window->clear(sf::Color::White);
-        levels[currentLevel]->updateAndDraw(window);
+        levels[currentLevel]->updateAndDraw(window, currentLevel + 1,
+                                            scoreboard);
         scoreboard->updateAndDraw(currentLevel + 1, window);
         window->display();
         loopCount = 0;
@@ -97,7 +98,8 @@ class Game {
       // restart the level if the player hits an antitarget
       if (levels[currentLevel]->needsReset()) {
         window->clear(sf::Color::White);
-        levels[currentLevel]->updateAndDraw(window);
+        levels[currentLevel]->updateAndDraw(window, currentLevel + 1,
+                                            scoreboard);
         scoreboard->updateAndDraw(currentLevel + 1, window);
         window->display();
         message = "LEVEL FAILED";
@@ -115,7 +117,8 @@ class Game {
           wasRPressed = true;
 
           window->clear(sf::Color::White);
-          levels[currentLevel]->updateAndDraw(window);
+          levels[currentLevel]->updateAndDraw(window, currentLevel + 1,
+                                              scoreboard);
           scoreboard->updateAndDraw(currentLevel + 1, window);
           window->display();
           message = "RESETTING LEVEL";
@@ -130,14 +133,7 @@ class Game {
         wasRPressed = false;
       }
 
-      // clear window
-      // window->clear(sf::Color::White);
-
-      levels[currentLevel]->updateAndDraw(window);
-      // scoreboard->updateAndDraw(currentLevel + 1, window);
-
-      // display window
-      // window->display();
+      levels[currentLevel]->updateAndDraw(window, currentLevel + 1, scoreboard);
 
       if (currentLevel < 5 && loopCount < 6) {
         tutorialText = new TutorialText(window, currentLevel, loopCount);

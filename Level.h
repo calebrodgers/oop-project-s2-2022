@@ -13,6 +13,7 @@
 #include "Light.h"
 #include "Mirror.h"
 #include "Player.h"
+#include "Scoreboard.h"
 #include "Target.h"
 #include "Wall.h"
 
@@ -142,7 +143,7 @@ class Level {
   }
 
   // update elements in the level and draw entities
-  void updateAndDraw(RenderWindow* window) {
+  void updateAndDraw(RenderWindow* window, int level, Scoreboard* scoreboard) {
     for (int i = 0; i < numOfWalls; i++) {
       walls[i]->notHit();
     }
@@ -200,9 +201,14 @@ class Level {
     }
 
     for (int frame = 0; frame < 16; frame++) {
+      // clear window
       window->clear(sf::Color::White);
+
       // draw border
       border->draw(window);
+
+      // draw scoreboard
+      scoreboard->updateAndDraw(level, window);
       for (int row = 0; row <= 704; row = row + 64) {
         // draw mirrors base
         for (int i = 0; i < numOfMirrors; i++) {
@@ -255,7 +261,7 @@ class Level {
             if (frame == 3) {
               player->spriteIncrement();
             }
-            if (frame == 10) {
+            if (frame == 12) {
               player->spriteIncrement();
             }
           }
@@ -265,9 +271,11 @@ class Level {
       }
       if (moved) {
         clock.restart();
-        while (clock.getElapsedTime().asSeconds() < 0.01) {
+        while (clock.getElapsedTime().asSeconds() < 0.005) {
         }
       }
+
+      // display window
       window->display();
     }
     moved = false;
