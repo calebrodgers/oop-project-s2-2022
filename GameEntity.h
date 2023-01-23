@@ -16,6 +16,7 @@ class GameEntity {
   // includes functions to draw body and get position
   void draw(RenderWindow* window) { window->draw(*body); }
   virtual Vector2f getPos() { return body->getPosition(); }
+  void animate(Vector2f amnt) { body->move(amnt); }
 };
 
 #endif

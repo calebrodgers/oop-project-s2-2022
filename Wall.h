@@ -26,10 +26,9 @@ class Wall : public HittableEntity {
     body->setFillColor(sf::Color{201, 37, 34});
   }
 
-  // unique draw function that changes colour to default wall colour, which is
-  // changed if hit
-  void draw(RenderWindow* window) {
-    window->draw(*body);
+  // resets colour of wall
+  void notHit() {
+    isHit = false;
     body->setFillColor(sf::Color{125, 21, 19});
   }
 };

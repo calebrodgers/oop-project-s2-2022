@@ -14,7 +14,6 @@ class Player : public GameEntity {
   bool wasAPressed = false;
   bool wasSPressed = false;
   bool wasDPressed = false;
-  bool moved = false;
   int step_count = 0;
   Texture texture;
 
@@ -82,10 +81,11 @@ class Player : public GameEntity {
               Antitarget** antitargets, int numOfAntitargets) {
     // move up
     if (!wasWPressed) {
-      if (Keyboard::isKeyPressed(Keyboard::W) ||
-          Keyboard::isKeyPressed(Keyboard::Up)) {
-        bool moved = move(Vector2f(0, -64), 768, numOfMirrors, mirrors, walls,
-                          numOfWalls, antitargets, numOfAntitargets);
+      if ((Keyboard::isKeyPressed(Keyboard::W) ||
+           Keyboard::isKeyPressed(Keyboard::Up)) &&
+          !wasAPressed && !wasSPressed && !wasDPressed) {
+        move(Vector2f(0, -64), 768, numOfMirrors, mirrors, walls, numOfWalls,
+             antitargets, numOfAntitargets);
         wasWPressed = true;
         body->setTextureRect(IntRect(0, 288, 64, 96));
       }
@@ -96,10 +96,11 @@ class Player : public GameEntity {
 
     // move left
     if (!wasAPressed) {
-      if (Keyboard::isKeyPressed(Keyboard::A) ||
-          Keyboard::isKeyPressed(Keyboard::Left)) {
-        bool moved = move(Vector2f(-64, 0), 768, numOfMirrors, mirrors, walls,
-                          numOfWalls, antitargets, numOfAntitargets);
+      if ((Keyboard::isKeyPressed(Keyboard::A) ||
+           Keyboard::isKeyPressed(Keyboard::Left)) &&
+          !wasWPressed && !wasSPressed && !wasDPressed) {
+        move(Vector2f(-64, 0), 768, numOfMirrors, mirrors, walls, numOfWalls,
+             antitargets, numOfAntitargets);
         wasAPressed = true;
         body->setTextureRect(IntRect(0, 96, 64, 96));
       }
@@ -110,10 +111,11 @@ class Player : public GameEntity {
 
     // move down
     if (!wasSPressed) {
-      if (Keyboard::isKeyPressed(Keyboard::S) ||
-          Keyboard::isKeyPressed(Keyboard::Down)) {
-        bool moved = move(Vector2f(0, 64), 768, numOfMirrors, mirrors, walls,
-                          numOfWalls, antitargets, numOfAntitargets);
+      if ((Keyboard::isKeyPressed(Keyboard::S) ||
+           Keyboard::isKeyPressed(Keyboard::Down)) &&
+          !wasWPressed && !wasAPressed && !wasDPressed) {
+        move(Vector2f(0, 64), 768, numOfMirrors, mirrors, walls, numOfWalls,
+             antitargets, numOfAntitargets);
         wasSPressed = true;
         body->setTextureRect(IntRect(0, 0, 64, 96));
       }
@@ -124,16 +126,34 @@ class Player : public GameEntity {
 
     // move right
     if (!wasDPressed) {
-      if (Keyboard::isKeyPressed(Keyboard::D) ||
-          Keyboard::isKeyPressed(Keyboard::Right)) {
-        bool moved = move(Vector2f(64, 0), 768, numOfMirrors, mirrors, walls,
-                          numOfWalls, antitargets, numOfAntitargets);
+      if ((Keyboard::isKeyPressed(Keyboard::D) ||
+           Keyboard::isKeyPressed(Keyboard::Right)) &&
+          !wasWPressed && !wasAPressed && !wasSPressed) {
+        move(Vector2f(64, 0), 768, numOfMirrors, mirrors, walls, numOfWalls,
+             antitargets, numOfAntitargets);
         wasDPressed = true;
         body->setTextureRect(IntRect(0, 192, 64, 96));
       }
     } else if (!Keyboard::isKeyPressed(Keyboard::D) &&
                !Keyboard::isKeyPressed(Keyboard::Right)) {
       wasDPressed = false;
+    }
+  }
+
+  void spriteIncrement() {
+    step_count++;
+    if (step_count >= 4) {
+      step_count = 0;
+    }
+
+    if (wasWPressed) {
+      body->setTextureRect(IntRect(64 * step_count, 288, 64, 96));
+    } else if (wasAPressed) {
+      body->setTextureRect(IntRect(64 * step_count, 96, 64, 96));
+    } else if (wasSPressed) {
+      body->setTextureRect(IntRect(64 * step_count, 0, 64, 96));
+    } else if (wasDPressed) {
+      body->setTextureRect(IntRect(64 * step_count, 192, 64, 96));
     }
   }
 };

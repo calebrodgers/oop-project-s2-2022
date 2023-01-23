@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <fstream>
+#include <iostream>
 #include <vector>
 
 #include "Antitarget.h"
@@ -18,6 +19,8 @@
 // this is the class for the game's levels
 class Level {
  private:
+  sf::Clock clock;
+
   // number of game entities there are multiple of
   int numOfMirrors;
   int numOfWalls;
@@ -140,8 +143,8 @@ class Level {
 
   // update elements in the level and draw entities
   void updateAndDraw(RenderWindow* window) {
-    for (int i = 0; i < numOfMirrors; i++) {
-      mirrors[i]->drawBase(window);
+    for (int i = 0; i < numOfWalls; i++) {
+      walls[i]->notHit();
     }
 
     int lightMoving = true;
@@ -175,35 +178,99 @@ class Level {
         countLight++;
       }
     }
-
-    // draw light
-    for (int i = 0; i < light.size() - 1; i++) {
-      light[i]->draw(window);
-    }
     countLight = 0;
 
     // update player
+    Vector2f old_pos = player->getPos();
     player->update(numOfMirrors, mirrors, walls, numOfWalls, antitargets,
                    numOfAntitargets);
+    Vector2f current_pos = player->getPos();
+    Vector2f direction;
+    bool moved = false;
 
-    // draw game entities
-    for (int i = 0; i < numOfMirrors; i++) {
-      mirrors[i]->draw(window);
+    if (current_pos != old_pos) {
+      direction.x = old_pos.x - current_pos.x;
+      direction.y = old_pos.y - current_pos.y;
+
+      player->move(direction, 768, numOfMirrors, mirrors, walls, numOfWalls,
+                   antitargets, numOfAntitargets);
+      direction.x = direction.x / -16;
+      direction.y = direction.y / -16;
+      moved = true;
     }
 
-    for (int i = 0; i < numOfWalls; i++) {
-      walls[i]->draw(window);
+    for (int frame = 0; frame < 16; frame++) {
+      window->clear(sf::Color::White);
+      // draw border
+      border->draw(window);
+      for (int row = 0; row <= 704; row = row + 64) {
+        // draw mirrors base
+        for (int i = 0; i < numOfMirrors; i++) {
+          if (mirrors[i]->getPos().y == row) {
+            mirrors[i]->drawBase(window);
+          }
+        }
+
+        // draw light
+        for (int i = 0; i < light.size() - 1; i++) {
+          if (light[i]->getPos().y == row) {
+            light[i]->draw(window);
+          }
+        }
+
+        // draw mirrors
+        for (int i = 0; i < numOfMirrors; i++) {
+          if (mirrors[i]->getPos().y == row) {
+            mirrors[i]->draw(window);
+          }
+        }
+
+        // draw walls
+        for (int i = 0; i < numOfWalls; i++) {
+          if (walls[i]->getPos().y == row) {
+            walls[i]->draw(window);
+          }
+        }
+
+        // draw antitargets
+        for (int i = 0; i < numOfAntitargets; i++) {
+          if (antitargets[i]->getPos().y == row) {
+            antitargets[i]->draw(window);
+          }
+        }
+
+        // draw target and emitter
+        if (target->getPos().y == row) {
+          target->draw(window);
+        }
+        if (emitter->getPos().y == row) {
+          emitter->draw(window);
+        }
+
+        // animate and draw player
+        if (old_pos.y == row) {
+          if (moved) {
+            player->animate(direction);
+
+            if (frame == 3) {
+              player->spriteIncrement();
+            }
+            if (frame == 10) {
+              player->spriteIncrement();
+            }
+          }
+
+          player->draw(window);
+        }
+      }
+      if (moved) {
+        clock.restart();
+        while (clock.getElapsedTime().asSeconds() < 0.01) {
+        }
+      }
+      window->display();
     }
-
-    border->draw(window);
-
-    for (int i = 0; i < numOfAntitargets; i++) {
-      antitargets[i]->draw(window);
-    }
-
-    target->draw(window);
-    emitter->draw(window);
-    player->draw(window);
+    moved = false;
 
     // reset level if antitarget hit
     for (int i = 0; i < numOfAntitargets; i++) {

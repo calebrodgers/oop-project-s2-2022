@@ -131,13 +131,13 @@ class Game {
       }
 
       // clear window
-      window->clear(sf::Color::White);
+      // window->clear(sf::Color::White);
 
       levels[currentLevel]->updateAndDraw(window);
-      scoreboard->updateAndDraw(currentLevel + 1, window);
+      // scoreboard->updateAndDraw(currentLevel + 1, window);
 
       // display window
-      window->display();
+      // window->display();
 
       if (currentLevel < 5 && loopCount < 6) {
         tutorialText = new TutorialText(window, currentLevel, loopCount);
